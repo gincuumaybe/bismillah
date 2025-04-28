@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PenghuniController;
+use App\Http\Controllers\LaporanController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,7 @@ Route::resource('penghuni', PenghuniController::class);
 
 Route::get('/penghuni', [PenghuniController::class, 'index'])->name('penghuni.index');
 
+Route::resource('laporan', LaporanController::class);
 
 
 Route::get('/dashboard', function () {

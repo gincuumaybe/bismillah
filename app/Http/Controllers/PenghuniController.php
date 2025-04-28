@@ -35,11 +35,19 @@ class PenghuniController extends Controller
         // Validasi data
         $request->validate([
         'nama' => 'required|string|max:255',
+        'no_telp' => 'required|numeric|unique:penghunis,no_telp',
+        // 'email' => 'required|email|max:255',
+        // 'password' => 'required|string|min:6',
+        'lokasi' => 'required|string|max:100',
     ]);
 
         // Simpan ke DB (nanti kita buat model dan tabelnya)
-        \App\Models\Penghuni::create([
+        Penghuni::create([
         'nama' => $request->nama,
+        'no_telp' => $request->no_telp,
+        // 'email' => $request->email,
+        // 'password' => bcrypt($request->password),
+        'lokasi' => $request->lokasi,
     ]);
 
         return redirect()->route('penghuni.index')->with('success', 'Penghuni berhasil ditambahkan!');
