@@ -66,7 +66,8 @@ class LaporanController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $laporan = Laporan::findOrFail($id);
+        return view('laporan.edit', compact('laporan'));
     }
 
     /**
@@ -74,7 +75,20 @@ class LaporanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'gambar' => 'nullable|url',
+        ]);
+
+        $laporan = Laporan::findOrFail($id);
+        $laporan->nama = $request->nama;
+        $laporan->deskripsi = $request->deskripsi;
+        $laporan->gambar = $request->gambar; // langsung simpan URL-nya
+
+        $laporan->save();
+
+        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil diperbarui.');
     }
 
     /**

@@ -33,6 +33,7 @@ Route::get('/laporan/create', [LaporanController::class, 'create'])->name('lapor
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 
+Route::get('/laporan/{id}/edit', [LaporanController::class, 'edit'])->name('laporan.edit');
 
 
 

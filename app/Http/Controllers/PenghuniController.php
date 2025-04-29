@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Penghuni;
-
+use App\Models\User;
 
 use Illuminate\Http\Request;
 
@@ -13,8 +13,7 @@ class PenghuniController extends Controller
      */
     public function index()
     {
-        // ambil data penghuni dari database (nanti kita buat modelnya)
-        $penghunis = Penghuni::all();
+        $penghunis = User::where('role', 'user')->get(); // ambil semua user dengan role user
         return view('penghuni.index', compact('penghunis'));
     }
 
@@ -66,7 +65,8 @@ class PenghuniController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $penghuni = User::findOrFail($id);
+        return view('penghuni.edit', compact('penghuni'));
     }
 
     /**
@@ -74,7 +74,18 @@ class PenghuniController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'lokasi' => 'nullable|string|max:255',
+        ]);
+
+        $penghuni = User::findOrFail($id);
+        $penghuni->update([
+            'name' => $request->name,
+            'lokasi' => $request->lokasi,
+        ]);
+
+        return redirect()->route('penghuni.index')->with('success', 'Data penghuni berhasil diperbarui.');
     }
 
     /**
@@ -82,6 +93,14 @@ class PenghuniController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+            $penghuni = User::findOrFail($id);
+
+        // Optional: Cek role dulu agar yang dihapus memang role user
+        if ($penghuni->role !== 'user') {
+            return redirect()->route('penghuni.index')->with('error', 'Data yang dihapus bukan penghuni.');
+        }
+
+        $penghuni->delete();
+        return redirect()->route('penghuni.index')->with('success', 'Data penghuni berhasil dihapus.');
     }
 }
