@@ -39,6 +39,22 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- Pilih Lokasi Kost -->
+        <div class="mt-4">
+            <x-input-label for="lokasi_kost" :value="__('Pilih Lokasi Kost')" />
+
+            <select id="lokasi_kost" name="lokasi_kost" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="">-- Pilih Lokasi --</option>
+                <option value="berbek">Berbek</option>
+                <option value="gunung_anyar">Gunung Anyar</option>
+                <option value="rungkut">Rungkut</option>
+            </select>
+
+            <x-input-error :messages="$errors->get('lokasi_kost')" class="mt-2" />
+        </div>
+
+
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
