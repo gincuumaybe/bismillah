@@ -27,6 +27,10 @@ Route::get('/penghuni', [PenghuniController::class, 'index'])->name('penghuni.in
 
 Route::resource('laporan', LaporanController::class);
 
+Route::get('/laporan/create', [LaporanController::class, 'create'])->name('laporan.create');
+
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

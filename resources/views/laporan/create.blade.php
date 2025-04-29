@@ -26,7 +26,7 @@
                             <input type="file" name="gambar" id="gambar" class="mt-1 block w-full" accept="image/*">
                         </div>
 
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Simpan Laporan</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-black rounded hover:bg-blue-700">Simpan Laporan</button>
                     </form>
                 </div>
             </div>

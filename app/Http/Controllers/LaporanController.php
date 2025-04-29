@@ -21,7 +21,7 @@ class LaporanController extends Controller
      */
     public function create()
     {
-        //
+        return view('laporan.create');
     }
 
     /**
