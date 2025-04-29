@@ -35,6 +35,8 @@ Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('l
 
 Route::get('/laporan/{id}/edit', [LaporanController::class, 'edit'])->name('laporan.edit');
 
+Route::put('/laporan/{id}', [LaporanController::class, 'update'])->name('laporan.update');
+
 
 
 Route::get('/dashboard', function () {

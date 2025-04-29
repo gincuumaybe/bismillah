@@ -30,27 +30,32 @@ class LaporanController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama' => 'required|string',
-            'deskripsi' => 'required|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
 
-        // Simpan gambar jika ada
-        $gambarPath = null;
-        if ($request->hasFile('gambar')) {
-            $gambarPath = $request->file('gambar')->store('laporan_images', 'public');
-        }
 
-        // Simpan laporan ke database
-        Laporan::create([
-            'nama' => $request->nama,
-            'deskripsi' => $request->deskripsi,
-            'gambar' => $gambarPath,
-            'user_id' => auth()->id(),
-        ]);
+        // Validasi input
+    $request->validate([
+        'nama' => 'required|string|max:255',
+        'deskripsi' => 'required|string',
+        'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi gambar
+    ]);
 
-        return redirect()->route('laporan.index');
+    // Menyimpan gambar jika ada
+    $path = null;
+    if ($request->hasFile('gambar')) {
+        // Simpan gambar dan ambil path-nya
+        $path = $request->file('gambar')->store('gambar_laporan', 'public');
+    }
+
+    // Simpan laporan ke database
+    Laporan::create([
+        'nama' => $request->nama,
+        'deskripsi' => $request->deskripsi,
+        'gambar' => $path, // Pastikan ini menggunakan $path
+        // 'user_id' => auth()->id(), // Menyimpan user_id yang sedang login
+    ]);
+
+    // Redirect kembali ke halaman laporan dengan pesan sukses
+    return redirect()->route('laporan.index')->with('success', 'Laporan berhasil ditambahkan!');
     }
 
     /**
@@ -84,7 +89,12 @@ class LaporanController extends Controller
         $laporan = Laporan::findOrFail($id);
         $laporan->nama = $request->nama;
         $laporan->deskripsi = $request->deskripsi;
-        $laporan->gambar = $request->gambar; // langsung simpan URL-nya
+        $laporan->gambar = $request->gambar;
+
+        if ($request->hasFile('gambar')) {
+            $gambarPath = $request->file('gambar')->store('laporan_images', 'public');
+            $laporan->gambar = asset('storage/' . $gambarPath);
+        }
 
         $laporan->save();
 
