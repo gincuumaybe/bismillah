@@ -13,6 +13,13 @@ class Laporan extends Model
         'nama',
         'deskripsi',
         'gambar',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 
 }

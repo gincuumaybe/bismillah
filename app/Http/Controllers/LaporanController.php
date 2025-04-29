@@ -12,6 +12,7 @@ class LaporanController extends Controller
      */
     public function index()
     {
+
         $laporans = Laporan::all();
         return view('laporan.index', compact('laporans'));
     }
@@ -46,6 +47,7 @@ class LaporanController extends Controller
             'nama' => $request->nama,
             'deskripsi' => $request->deskripsi,
             'gambar' => $gambarPath,
+            'user_id' => auth()->id(),
         ]);
 
         return redirect()->route('laporan.index');

@@ -22,7 +22,7 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700">
-                            {{ Auth::user()->name }}
+                            {{ Auth::check() ? Auth::user()->name : '' }}
                             <svg class="ml-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.66a.75.75 0 01-1.08 0l-4.25-4.66a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
                             </svg>
@@ -71,8 +71,10 @@
             <!-- Responsive Settings -->
             <div class="pt-4 pb-1 border-t border-gray-200">
                 <div class="px-4">
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-base text-gray-800">{{ Auth::check() ? Auth::user()->name : '' }}
+                    </div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::check() ? Auth::user()->email : '' }}
+                    </div>
                 </div>
 
                 <form method="POST" action="{{ route('logout') }}" class="mt-3 space-y-1">
@@ -86,3 +88,4 @@
         </div>
     </div>
 </nav>
+
