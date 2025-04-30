@@ -13,6 +13,7 @@ class Penghuni extends Model
 
 
     protected $fillable = [
+        'user_id',
         'name',
         'email',
         'phone',
@@ -24,5 +25,11 @@ class Penghuni extends Model
     protected $hidden = [
         'password',
     ];
+
+    public function penghuni()
+    {
+        return $this->hasOne(Penghuni::class);
+    }
+
 
 }
