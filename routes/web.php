@@ -50,11 +50,11 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/admin/dashboard', function () {
-        return view('dashboard'); // view admin sudah kamu punya
+        return view('dashboard');
     })->name('views.dashboard');
 
     Route::get('/user/dashboard', function () {
-        return view('user.dashboard'); // view user akan dibuat
+        return view('user.dashboard');
     })->name('user.dashboard');
 });
 

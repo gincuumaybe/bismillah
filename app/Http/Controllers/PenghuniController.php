@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Penghuni;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 
 use Illuminate\Http\Request;
 
@@ -34,19 +36,20 @@ class PenghuniController extends Controller
         // Validasi data
         $request->validate([
         'nama' => 'required|string|max:255',
-        'no_telp' => 'required|numeric|unique:penghunis,no_telp',
-        // 'email' => 'required|email|max:255',
-        // 'password' => 'required|string|min:6',
-        'lokasi' => 'required|string|max:100',
+        'email' => 'required|email|max:255|unique:users,email',
+        'no_telp' => 'required|numeric|unique:users,phone',
+        'lokasi_kost' => ['required', 'string', 'in:Gunung_Anyar,Berbek,Rungkut'],
+        'password' => 'required|string|min:6',
     ]);
 
         // Simpan ke DB (nanti kita buat model dan tabelnya)
         Penghuni::create([
-        'nama' => $request->nama,
-        'no_telp' => $request->no_telp,
-        // 'email' => $request->email,
-        // 'password' => bcrypt($request->password),
-        'lokasi' => $request->lokasi,
+        'name' => $request->nama,
+        'email' => $request->email,
+        'phone' => $request->no_telp,
+        'lokasi_kost' => $request->lokasi_kost,
+        'password' => Hash::make($request->password),
+        'role' => 'user',
     ]);
 
         return redirect()->route('penghuni.index')->with('success', 'Penghuni berhasil ditambahkan!');
@@ -76,13 +79,17 @@ class PenghuniController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'lokasi' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'no_telp'=> 'required|string|max:20',
+            'lokasi_kost' => 'required|string|in:Berbek,Gunung Anyar,Rungkut',
         ]);
 
         $penghuni = User::findOrFail($id);
         $penghuni->update([
             'name' => $request->name,
-            'lokasi' => $request->lokasi,
+            'email' => $request->email,
+            'phone' => $request->no_telp,
+            'lokasi' => $request->lokasi_kost,
         ]);
 
         return redirect()->route('penghuni.index')->with('success', 'Data penghuni berhasil diperbarui.');

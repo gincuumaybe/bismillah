@@ -10,6 +10,19 @@ class Penghuni extends Model
     use HasFactory;
 
     protected $table = 'penghunis';
-    protected $fillable = ['nama'];
+
+
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'role',
+        'lokasi_kost',
+        'password',
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
 
 }

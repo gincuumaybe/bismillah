@@ -18,8 +18,8 @@
                     <thead class="bg-orange-200">
                         <tr class="bg-gray-100">
                             <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Nama</th>
-                            {{-- <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">No Telepon</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Email</th> --}}
+                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Email</th>
+                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">No Telepon</th>
                             <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Lokasi</th>
                             <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Aksi</th>
                         </tr>
@@ -28,9 +28,9 @@
                         @foreach($penghunis as $penghuni)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->name }}</td>
-                                {{-- <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->no_telp }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->email }}</td> --}}
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->lokasi }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->email }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->phone }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->lokasi_kost }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900">
                                     <div class="flex items-center space-x-2">
                                         <a href="{{ route('penghuni.edit', $penghuni->id) }}" class="text-blue-600 hover:text-blue-800 transition duration-300 flex items-center space-x-1">

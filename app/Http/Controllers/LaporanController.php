@@ -51,7 +51,6 @@ class LaporanController extends Controller
         'nama' => $request->nama,
         'deskripsi' => $request->deskripsi,
         'gambar' => $path, // Pastikan ini menggunakan $path
-        // 'user_id' => auth()->id(), // Menyimpan user_id yang sedang login
     ]);
 
     // Redirect kembali ke halaman laporan dengan pesan sukses

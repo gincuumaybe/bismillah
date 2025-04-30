@@ -33,12 +33,15 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'phone' => ['required', 'string', 'regex:/^08[0-9]{8,11}$/'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'lokasi_kost' => ['required', 'string', 'in:Berbek,Gunung_Anyar,Rungkut'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password),
             'role' => 'user',
             'lokasi_kost' => $request->lokasi_kost,
@@ -47,6 +50,12 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        if ($user->role === 'user') {
+            return redirect()->route('user.dashboard'); // ganti sesuai route kamu
+        } elseif ($user->role === 'admin') {
+            return redirect()->route('views.dashboard');
+        }
 
         return redirect(RouteServiceProvider::HOME);
     }

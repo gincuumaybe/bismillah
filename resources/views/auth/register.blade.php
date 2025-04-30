@@ -16,6 +16,14 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Nomor Telepon -->
+        <div class="mt-4">
+            <x-input-label for="phone" :value="__('Nomor Telepon')" />
+            <x-text-input id="phone" class="block mt-1 w-full" type="tel" name="phone" :value="old('phone')" required autocomplete="tel" />
+            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+        </div>
+
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
@@ -45,9 +53,9 @@
 
             <select id="lokasi_kost" name="lokasi_kost" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                 <option value="">-- Pilih Lokasi --</option>
-                <option value="berbek">Berbek</option>
-                <option value="gunung_anyar">Gunung Anyar</option>
-                <option value="rungkut">Rungkut</option>
+                <option value="Berbek">Berbek</option>
+                <option value="Gunung_Anyar">Gunung Anyar</option>
+                <option value="Rungkut">Rungkut</option>
             </select>
 
             <x-input-error :messages="$errors->get('lokasi_kost')" class="mt-2" />
