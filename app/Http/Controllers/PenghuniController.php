@@ -5,21 +5,20 @@ use App\Models\Penghuni;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use App\Models\Laporan;
+
 
 class PenghuniController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+
     public function index()
     {
         $penghunis = User::where('role', 'user')->get(); // ambil semua user dengan role user
         return view('penghuni.index', compact('penghunis'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         return view('penghuni.create');
@@ -103,7 +102,6 @@ class PenghuniController extends Controller
         ]);
 
         // Cari data di tabel penghunis berdasarkan user_id
-        $penghuni = Penghuni::where('user_id', $user->id)->first();
         if ($penghuni) {
             $penghuni->update([
                 'name' => $request->name,

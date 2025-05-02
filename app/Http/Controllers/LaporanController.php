@@ -2,24 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Laporan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class LaporanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
 
-        $laporans = Laporan::all();
+    public function indexAdmin()
+    {
+        $laporans = Laporan::all(); // semua laporan
         return view('laporan.index', compact('laporans'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function indexUser()
+    {
+
+        $laporans = Laporan::where('user_id', auth()->user()->id)->get();
+        $penghunis = User::where('role', 'user')->get(); // ambil semua user dengan role user
+        return view('laporan.user_index', compact('laporans'));
+    }
+
     public function create()
     {
         return view('laporan.create');
@@ -30,86 +37,91 @@ class LaporanController extends Controller
      */
     public function store(Request $request)
     {
-
-
         // Validasi input
-    $request->validate([
-        'nama' => 'required|string|max:255',
-        'deskripsi' => 'required|string',
-        'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi gambar
-    ]);
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:2048',  // Validasi gambar
+        ]);
 
-    // Menyimpan gambar jika ada
-    $path = null;
-    if ($request->hasFile('gambar')) {
-        // Simpan gambar dan ambil path-nya
-        $path = $request->file('gambar')->store('gambar_laporan', 'public');
-    }
+        // Menangani upload gambar
+        $gambarUrl = null;
+        if ($request->hasFile('gambar')) {
+            // Upload gambar ke storage (misalnya public disk)
+            $gambarUrl = $request->file('gambar')->store('laporan_gambar', 'public');
+        }
 
-    // Simpan laporan ke database
-    Laporan::create([
-        'nama' => $request->nama,
-        'deskripsi' => $request->deskripsi,
-        'gambar' => $path, // Pastikan ini menggunakan $path
-    ]);
+        // Menyimpan laporan
+        Laporan::create([
+            'user_id' => auth()->id(),
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'gambar' => $gambarUrl,  // Menyimpan URL gambar
+        ]);
 
-    // Redirect kembali ke halaman laporan dengan pesan sukses
-    return redirect()->route('laporan.index')->with('success', 'Laporan berhasil ditambahkan!');
+        return redirect()->route('laporan.indexUser')->with('success', 'Laporan berhasil dibuat!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Laporan $laporan)
     {
-        //
+        return view('laporan.show', compact('laporan'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Laporan $laporan)
     {
-        $laporan = Laporan::findOrFail($id);
         return view('laporan.edit', compact('laporan'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Laporan $laporan)
     {
+        // Validasi input
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'gambar' => 'nullable|url',
+            'gambar' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:2048',  // Validasi gambar
         ]);
 
-        $laporan = Laporan::findOrFail($id);
-        $laporan->nama = $request->nama;
-        $laporan->deskripsi = $request->deskripsi;
-        $laporan->gambar = $request->gambar;
-
+        // Menangani upload gambar
+        $gambarUrl = $laporan->gambar; // Gambar lama jika tidak ada yang baru
         if ($request->hasFile('gambar')) {
-            $gambarPath = $request->file('gambar')->store('laporan_images', 'public');
-            $laporan->gambar = asset('storage/' . $gambarPath);
+            // Hapus gambar lama jika ada
+            if ($laporan->gambar) {
+                Storage::disk('public')->delete($laporan->gambar);
+            }
+            // Upload gambar baru
+            $gambarUrl = $request->file('gambar')->store('laporan_gambar', 'public');
         }
 
-        $laporan->save();
+        // Update data laporan
+        $laporan->update([
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'gambar' => $gambarUrl,  // Menyimpan URL gambar
+        ]);
 
-        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil diperbarui.');
+        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Laporan $laporan)
     {
-        $laporan = Laporan::findOrFail($id);
-
-        // Hapus laporan dari database
-        $laporan->delete();
-
-        return redirect()->route('laporan.index');
+        // Cek apakah yang menghapus adalah admin atau user
+        if (auth()->user()->role == 'admin' || auth()->user()->id == $laporan->user_id) {
+            $laporan->delete();
+            return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dihapus');
+        } else {
+            return redirect()->route('laporan.index')->with('error', 'Tidak memiliki akses untuk menghapus laporan ini');
+        }
     }
 }

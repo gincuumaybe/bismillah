@@ -12,8 +12,8 @@
                     <form action="{{ route('laporan.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-4">
-                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
-                            <input type="text" name="nama" id="nama" class="mt-1 block w-full" required>
+                            <label for="judul" class="block text-sm font-medium text-gray-700">Judul</label>
+                            <input type="text" name="judul" id="judul" class="mt-1 block w-full" required>
                         </div>
 
                         <div class="mb-4">

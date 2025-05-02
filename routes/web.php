@@ -1,53 +1,29 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PenghuniController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
+// Halaman awal
 Route::get('/', function () {
-    // return redirect()->route('login');
     return view('welcome1');
 });
 
-Route::resource('penghuni', PenghuniController::class);
-
-Route::get('/penghuni', [PenghuniController::class, 'index'])->name('penghuni.index');
-
-Route::resource('laporan', LaporanController::class);
-
-Route::get('/laporan/create', [LaporanController::class, 'create'])->name('laporan.create');
-
+// Autentikasi (Login)
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 
-Route::get('/laporan/{id}/edit', [LaporanController::class, 'edit'])->name('laporan.edit');
+// Resource Penghuni
+Route::resource('penghuni', PenghuniController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
-Route::put('/laporan/{id}', [LaporanController::class, 'update'])->name('laporan.update');
+// Grup route yang membutuhkan login
+Route::middleware(['auth'])->group(function () {
 
-
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->middleware(['verified'])->name('dashboard');
 
     Route::get('/admin/dashboard', function () {
         return view('dashboard');
@@ -56,7 +32,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/dashboard', function () {
         return view('user.dashboard');
     })->name('user.dashboard');
+
+    // Laporan (Admin dan User)
+    Route::get('/laporan/admin', [LaporanController::class, 'indexAdmin'])->name('laporan.indexAdmin');
+    Route::get('/laporan/user', [LaporanController::class, 'indexUser'])->name('laporan.indexUser');
+
+
+    // CRUD Laporan
+    Route::get('/laporan/create', [LaporanController::class, 'create'])->name('laporan.create');
+    Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.store');
+    Route::get('/laporan/{id}/edit', [LaporanController::class, 'edit'])->name('laporan.edit');
+    Route::put('/laporan/{id}', [LaporanController::class, 'update'])->name('laporan.update');
+    Route::delete('/laporan/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+// Route auth default dari Laravel Breeze / Fortify
 require __DIR__.'/auth.php';

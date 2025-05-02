@@ -24,7 +24,7 @@
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-lg font-semibold mb-4">Laporan</h3>
-                    <a href="{{ route('laporan.index') }}"
+                    <a href="{{ route('laporan.indexAdmin') }}"
                         class="inline-block px-4 py-2 bg-blue-600 text-black rounded hover:bg-blue-700">
                         Lihat Laporan
                     </a>
