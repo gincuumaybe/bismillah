@@ -124,4 +124,18 @@ class LaporanController extends Controller
             return redirect()->route('laporan.index')->with('error', 'Tidak memiliki akses untuk menghapus laporan ini');
         }
     }
+
+    public function setSelesai($id)
+    {
+        $laporan = Laporan::findOrFail($id);
+        $laporan->status = true; // selesai
+        $laporan->save();
+
+        return redirect()->route('laporan.indexAdmin')->with('status', 'Laporan ditandai sebagai selesai.');
+    }
+
+
 }
+
+
+

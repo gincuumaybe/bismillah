@@ -1,6 +1,3 @@
-
-
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -8,52 +5,63 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-700">Daftar Laporan Saya</h3>
-                    <a href="{{ route('laporan.create') }}"
-                       class="inline-flex items-center bg-blue-600 text-black px-4 py-2 rounded hover:bg-blue-700 transition text-sm font-semibold">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Tambah Laporan
-                    </a>
-                </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
 
-                <!-- Tampilkan tabel laporan -->
-                <table class="min-w-full table-auto border border-gray-300">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-4 py-2 border text-left">Judul</th>
-                            <th class="px-4 py-2 border text-left">Deskripsi</th>
-                            <th class="px-4 py-2 border text-left">Gambar</th>
-                            <th class="px-4 py-2 border text-left">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($laporans as $laporan)
+                <!-- Tombol Tambah Laporan -->
+                <a href="{{ route('laporan.create') }}"
+                   class="inline-flex items-center bg-green-600 text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition duration-300 mb-4">
+                    <x-heroicon-o-plus-circle class="w-5 h-5 mr-2" />
+                    + Tambah Laporan
+                </a>
+
+                <!-- Tabel Laporan -->
+                <div class="overflow-x-auto">
+                    <table id="laporan-table" class="min-w-full bg-white border border-gray-200 rounded-lg">
+                        <thead class="bg-gray-100 text-gray-800">
                             <tr>
-                                <td class="px-4 py-2 border">{{ $laporan->judul }}</td>
-                                <td class="px-4 py-2 border">{{ $laporan->deskripsi }}</td>
-                                <td class="px-4 py-2 border">
-                                    <img src="{{ $laporan->gambar }}" alt="Gambar" class="w-20 h-20 object-cover rounded">
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Judul</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Deskripsi</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Gambar</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($laporans as $laporan)
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="px-6 py-4">{{ $laporan->judul }}</td>
+                                <td class="px-6 py-4">{{ $laporan->deskripsi }}</td>
+                                <td class="px-6 py-4">
+                                    <img src="{{ $laporan->gambar }}" alt="Gambar"
+                                         class="w-20 h-20 object-cover rounded shadow-sm border border-gray-300">
                                 </td>
-                                <td class="px-4 py-2 border">
-                                    <div class="flex space-x-2">
-                                        <a href="{{ route('laporan.edit', $laporan->id) }}" class="text-blue-600 hover:text-blue-800">Edit</a>
-                                        <form action="{{ route('laporan.destroy', $laporan->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-800">Hapus</button>
-                                        </form>
-                                    </div>
+                                <td class="px-6 py-4">
+                                    @if ($laporan->status)
+                                        <span class="inline-block px-3 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">
+                                            Selesai
+                                        </span>
+                                    @else
+                                        <span class="inline-block px-3 py-1 text-xs font-semibold text-yellow-800 bg-yellow-200 rounded-full">
+                                            Pending
+                                        </span>
+                                    @endif
                                 </td>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Script Section --}}
+                <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+                <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+                <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+                <script>
+                    $(document).ready(function () {
+                        $('#laporan-table').DataTable();
+                    });
+                </script>
             </div>
         </div>
     </div>

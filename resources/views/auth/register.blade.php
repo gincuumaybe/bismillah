@@ -1,5 +1,6 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+
+    <form method="POST" action="{{ route('register') }}" id="register-form">
         @csrf
 
         <!-- Name -->
@@ -68,9 +69,46 @@
                 {{ __('Already registered?') }}
             </a>
 
-            <x-primary-button class="ms-4">
+            {{-- <x-primary-button class="ms-4">
+                {{ __('Register') }}
+            </x-primary-button> --}}
+
+            <x-primary-button type="button" id="submit-btn" class="ms-4">
                 {{ __('Register') }}
             </x-primary-button>
+
         </div>
     </form>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById('submit-btn').addEventListener('click', function(event) {
+            event.preventDefault(); // cegah submit langsung
+            const form = document.getElementById('register-form');
+
+            // cek validitas HTML5
+            if (!form.checkValidity()) {
+                form.reportValidity(); // munculin error default browser
+                return;
+            }
+
+            // kalau valid, tampilkan konfirmasi
+            Swal.fire({
+                title: 'Yakin data sudah benar?',
+                text: "Pastikan semua informasi sudah sesuai.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, daftar!',
+                cancelButtonText: 'Periksa lagi'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+
+
 </x-guest-layout>

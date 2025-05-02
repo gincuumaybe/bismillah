@@ -1,4 +1,3 @@
-{{--
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -6,118 +5,122 @@
         </h2>
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-blue-600">
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <a href="{{ route('penghuni.create') }}" class="bg-green-600 text-black px-6 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition duration-300 flex space-x-2 w-max">
-                    <x-heroicon-o-plus-circle class="w-5 h-5" />
-                    <span>+ Tambah Penghuni</span>
-                </a>
+    <div class="py-10">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white p-8 rounded-xl shadow-lg space-y-6">
 
-                <table class="mt-6 w-full border-collapse bg-green-500">
-                    <thead class="bg-orange-200">
-                        <tr class="bg-gray-100">
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Nama</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Email</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">No Telepon</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Lokasi</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        @foreach($penghunis as $penghuni)
+                {{-- Tombol Navigasi --}}
+                <div class="flex justify-between items-center">
+                    <button onclick="window.location.href='{{ route('dashboard') }}'"
+                        class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-300 transition">
+                        ← Kembali ke Dashboard
+                    </button>
+
+                    <a href="{{ route('penghuni.create') }}"
+                        class="flex items-center gap-2 bg-green-600 text-black px-5 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition">
+                        <x-heroicon-o-plus-circle class="w-5 h-5" />
+                        <span>Tambah Penghuni</span>
+                    </a>
+                </div>
+
+                {{-- Tabel --}}
+                <div class="overflow-x-auto">
+                    <table id="penghuni-table" class="min-w-full bg-white border border-gray-200 rounded-lg">
+                        <thead class="bg-gray-100 text-gray-700">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Nama</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Email</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">No Telepon</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Lokasi</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 text-sm">
+                            @foreach($penghunis as $penghuni)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->name }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->email }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->phone }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->lokasi_kost }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">
-                                    <div class="flex items-center space-x-2">
-                                        <a href="{{ route('penghuni.edit', $penghuni->id) }}" class="text-blue-600 hover:text-blue-800 transition duration-300 flex items-center space-x-1">
-                                            <x-heroicon-o-pencil class="w-5 h-5" />
-                                            <span>Edit</span>
+                                <td class="px-6 py-4">{{ $penghuni->name }}</td>
+                                <td class="px-6 py-4">{{ $penghuni->email }}</td>
+                                <td class="px-6 py-4">{{ $penghuni->phone }}</td>
+                                <td class="px-6 py-4">{{ $penghuni->lokasi_kost }}</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex gap-3">
+                                        <a href="{{ route('penghuni.edit', $penghuni->id) }}"
+                                            class="inline-flex items-center text-blue-600 hover:text-blue-800 transition">
+                                            <x-heroicon-o-pencil class="w-5 h-5 mr-1" />
+                                            Edit
                                         </a>
-                                        <form action="{{ route('penghuni.destroy', $penghuni->id) }}" method="POST" class="inline">
+                                        <form action="{{ route('penghuni.destroy', $penghuni->id) }}" method="POST" class="form-hapus inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="text-red-600 hover:text-red-800 transition duration-300 flex items-center space-x-1" type="submit">
-                                                <x-heroicon-o-trash class="w-5 h-5" />
-                                                <span>Hapus</span>
+                                            <button type="submit"
+                                                class="inline-flex items-center text-red-600 hover:text-red-800 transition">
+                                                <x-heroicon-o-trash class="w-5 h-5 mr-1" />
+                                                Hapus
                                             </button>
                                         </form>
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</x-app-layout> --}}
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
+                {{-- DataTables & SweetAlert --}}
+                <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+                <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+                <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Daftar Penghuni') }}
-        </h2>
-    </x-slot>
+                <script>
+                    $(document).ready(function () {
+                        $('#penghuni-table').DataTable({
+                            responsive: true,
+                            pageLength: 10,
+                            language: {
+                                search: "Cari:",
+                                lengthMenu: "Tampilkan _MENU_ entri",
+                                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                                paginate: {
+                                    first: "Awal",
+                                    last: "Akhir",
+                                    next: "→",
+                                    previous: "←"
+                                }
+                            }
+                        });
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-blue-600">
-            <div class="bg-white p-6 rounded-lg shadow-md">
+                        $('.form-hapus').on('submit', function (e) {
+                            e.preventDefault();
+                            Swal.fire({
+                                title: 'Yakin mau hapus?',
+                                text: "Data akan hilang permanen!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#d33',
+                                cancelButtonColor: '#3085d6',
+                                confirmButtonText: 'Ya, hapus!',
+                                cancelButtonText: 'Batal'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    this.submit();
+                                }
+                            });
+                        });
+                    });
+                </script>
 
-                <!-- Tombol Back -->
-                <button onclick="window.location.href='{{ route('dashboard') }}'" class="mb-4 bg-gray-300 text-black px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-400 transition duration-300">
-                    ← Kembali ke Dashboard
-                </button>
-
-                <!-- Tombol Tambah Penghuni -->
-                <a href="{{ route('penghuni.create') }}" class="bg-green-600 text-black px-6 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition duration-300 flex space-x-2 w-max">
-                    <x-heroicon-o-plus-circle class="w-5 h-5" />
-                    <span>+ Tambah Penghuni</span>
-                </a>
-
-                <!-- Tabel Penghuni -->
-                <table class="mt-6 w-full border-collapse bg-green-500">
-                    <thead class="bg-orange-200">
-                        <tr class="bg-gray-100">
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Nama</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Email</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">No Telepon</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Lokasi</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        @foreach($penghunis as $penghuni)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->name }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->email }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->phone }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $penghuni->lokasi_kost }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">
-                                    <div class="flex items-center space-x-2">
-                                        <a href="{{ route('penghuni.edit', $penghuni->id) }}" class="text-blue-600 hover:text-blue-800 transition duration-300 flex items-center space-x-1">
-                                            <x-heroicon-o-pencil class="w-5 h-5" />
-                                            <span>Edit</span>
-                                        </a>
-                                        <form action="{{ route('penghuni.destroy', $penghuni->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="text-red-600 hover:text-red-800 transition duration-300 flex items-center space-x-1" type="submit">
-                                                <x-heroicon-o-trash class="w-5 h-5" />
-                                                <span>Hapus</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
+                @if (session('success'))
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: '{{ session('success') }}',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                </script>
+                @endif
             </div>
         </div>
     </div>

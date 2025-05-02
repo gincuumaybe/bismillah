@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}" id="loginForm">
         @csrf
 
         <!-- Email Address -->
@@ -41,10 +41,35 @@
             @endif
 
             <div class="flex gap-4">
-                <x-primary-button>
+                <x-primary-button type="submit" id="submitButton">
                     {{ __('Log in') }}
                 </x-primary-button>
             </div>
         </div>
     </form>
+
+    <!-- SweetAlert2 Script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form from submitting immediately
+
+            // Show SweetAlert loading spinner
+            Swal.fire({
+                title: 'Masuk...',
+                text: 'Tunggu sebentar...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading(); // Show loading animation
+                }
+            });
+
+            // Simulate a delay before submitting form
+            setTimeout(() => {
+                // Submit the form after a short delay (this mimics async processing)
+                document.getElementById('loginForm').submit();
+            }, 2000); // Adjust delay as needed (2000ms = 2 seconds)
+        });
+    </script>
 </x-guest-layout>

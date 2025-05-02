@@ -36,12 +36,17 @@ Route::middleware(['auth'])->group(function () {
     // Laporan (Admin dan User)
     Route::get('/laporan/admin', [LaporanController::class, 'indexAdmin'])->name('laporan.indexAdmin');
     Route::get('/laporan/user', [LaporanController::class, 'indexUser'])->name('laporan.indexUser');
+    Route::patch('/laporan/{id}/selesai', [LaporanController::class, 'setSelesai'])->name('laporan.setSelesai');
+    
+
+
 
 
     // CRUD Laporan
     Route::get('/laporan/create', [LaporanController::class, 'create'])->name('laporan.create');
     Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.store');
     Route::get('/laporan/{id}/edit', [LaporanController::class, 'edit'])->name('laporan.edit');
+    Route::get('/laporan/{id}/delete', [LaporanController::class, 'destroy'])->name('laporan.delete');
     Route::put('/laporan/{id}', [LaporanController::class, 'update'])->name('laporan.update');
     Route::delete('/laporan/{id}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
 
