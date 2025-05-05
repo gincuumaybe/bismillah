@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PenghuniController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\PenyewaanKostController;
 
 // Halaman awal
 Route::get('/', function () {
@@ -33,11 +34,15 @@ Route::middleware(['auth'])->group(function () {
         return view('user.dashboard');
     })->name('user.dashboard');
 
+    // Resource Penyewaan Kost
+    Route::resource('penyewaan', PenyewaanKostController::class);
+
+
     // Laporan (Admin dan User)
     Route::get('/laporan/admin', [LaporanController::class, 'indexAdmin'])->name('laporan.indexAdmin');
     Route::get('/laporan/user', [LaporanController::class, 'indexUser'])->name('laporan.indexUser');
     Route::patch('/laporan/{id}/selesai', [LaporanController::class, 'setSelesai'])->name('laporan.setSelesai');
-    
+
 
 
 

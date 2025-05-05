@@ -52,7 +52,10 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         if ($user->role === 'user') {
-            return redirect()->route('user.dashboard'); // ganti sesuai route kamu
+            if (!$user->penyewaanKost()->exists()) {
+                return redirect()->route('penyewaan.create');
+        }
+            // return redirect()->route('user.dashboard');
         } elseif ($user->role === 'admin') {
             return redirect()->route('views.dashboard');
         }

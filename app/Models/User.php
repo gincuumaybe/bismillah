@@ -32,6 +32,12 @@ class User extends Authenticatable
         return $this->belongsTo(User::class);
     }
 
+
+    public function penyewaanKost()
+    {
+        return $this->hasOne(\App\Models\PenyewaanKost::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
