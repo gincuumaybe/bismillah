@@ -43,7 +43,7 @@ class PenyewaanKostController extends Controller
         ]);
 
         // Redirect setelah data berhasil disimpan
-        return redirect()->route('dashboard')->with('success', 'Data penyewaan berhasil disimpan!');
+        return redirect()->route('user.dashboard')->with('success', 'Data penyewaan berhasil disimpan!');
     }
 
     /**

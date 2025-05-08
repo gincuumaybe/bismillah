@@ -55,7 +55,6 @@ class RegisteredUserController extends Controller
             if (!$user->penyewaanKost()->exists()) {
                 return redirect()->route('penyewaan.create');
         }
-            // return redirect()->route('user.dashboard');
         } elseif ($user->role === 'admin') {
             return redirect()->route('views.dashboard');
         }
