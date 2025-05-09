@@ -41,13 +41,17 @@ class AuthenticatedSessionController extends Controller
 
         // Redirect berdasarkan role
         $user = Auth::user();
+
         if ($user->role === 'admin') {
             return redirect()->route('views.dashboard');
-        }   else {
-            return redirect()->route('user.dashboard');
+        }   elseif ($user->role === 'user') {
+            if (!$user->penyewaanKost()->exists()) {
+                return redirect()->route('penyewaan.create');
+            } else {
+                return redirect()->route('user.dashboard');
         }
     }
-
+}
     /**
      * Destroy an authenticated session.
      */
