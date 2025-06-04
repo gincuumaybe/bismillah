@@ -119,7 +119,7 @@ class PenghuniController extends Controller
      */
     public function destroy(string $id)
     {
-            $penghuni = User::findOrFail($id);
+        $penghuni = User::findOrFail($id);
 
         // Optional: Cek role dulu agar yang dihapus memang role user
         if ($penghuni->role !== 'user') {

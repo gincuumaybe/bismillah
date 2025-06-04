@@ -18,7 +18,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
         'name',
         'email',
         'phone',
@@ -27,16 +26,23 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 
 
     public function penyewaanKost()
     {
         return $this->hasOne(\App\Models\PenyewaanKost::class);
     }
+
+
+    public function laporans()
+    {
+        return $this->hasMany(\App\Models\Laporan::class);
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.

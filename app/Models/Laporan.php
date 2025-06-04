@@ -12,7 +12,14 @@ class Laporan extends Model
 
     // Kolom yang boleh diisi
     protected $fillable = [
-        'user_id', 'judul', 'deskripsi', 'gambar', 'status',
+        'user_id',
+        'name',
+        'lokasi_kost',
+        'nomor_kamar',
+        'judul',
+        'deskripsi',
+        'gambar',
+        'status',
     ];
 
     // Relasi ke model User

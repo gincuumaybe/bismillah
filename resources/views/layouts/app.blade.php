@@ -16,22 +16,22 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        @stack('scripts')
+
+    </head>
+    <body class="font-poppins antialiased h-screen">
+        <div class="min-h-screen flex">
+
+            @if(auth()->user()->role === 'admin')
+                @include('layouts.navigation')
+            @elseif(auth()->user()->role === 'user')
+                @include('layouts.sidebar-user')
             @endif
 
-            <!-- Page Content -->
-            <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <main class="ml-64 p-6 overflow-auto overflow-x-hidden">
                 {{ $slot }}
             </main>
         </div>

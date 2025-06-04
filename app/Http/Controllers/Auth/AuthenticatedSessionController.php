@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (! Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             return back()->withErrors([
                 'email' => __('auth.failed'),
             ])->onlyInput('email');
@@ -39,22 +39,27 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Redirect berdasarkan role
         $user = Auth::user();
 
         if ($user->role === 'admin') {
-            return redirect()->route('views.dashboard');
-        }   elseif ($user->role === 'user') {
-            if (!$user->penyewaanKost()->exists()) {
-                return redirect()->route('penyewaan.create');
-            } else {
-                return redirect()->route('user.dashboard');
+            return redirect()->route('dashboard');
+        } elseif ($user->role === 'user') {
+            return redirect()->route('user.dashboard');
         }
+
+        // Default jika role tidak dikenali
+        Auth::logout();
+        return redirect('/login')->withErrors(['email' => 'Role tidak dikenali']);
+
+        // if ($user->role === 'admin') {
+        //     return redirect()->route('views.dashboard');
+        // }   elseif ($user->role === 'user') {
+        //     if (!$user->penyewaanKost()->exists()) {
+        //         return redirect()->route('penyewaan.create');
+        //     } else {
+        //         return redirect()->route('user.dashboard');
+        // }
     }
-}
-    /**
-     * Destroy an authenticated session.
-     */
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();

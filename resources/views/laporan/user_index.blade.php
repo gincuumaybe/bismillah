@@ -10,7 +10,7 @@
             <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
 
                 <!-- Tombol Tambah Laporan -->
-                <a href="{{ route('laporan.create') }}"
+                <a href="{{ route('laporan.store') }}"
                    class="inline-flex items-center bg-green-600 text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition duration-300 mb-4">
                     <x-heroicon-o-plus-circle class="w-5 h-5 mr-2" />
                     + Tambah Laporan

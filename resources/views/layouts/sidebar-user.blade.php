@@ -1,15 +1,15 @@
 
-<aside class="fixed top-0 left-0 h-screen w-64 bg-gradient-to-br from-custom-blue to-custom-blue-light text-white overflow-auto font-poppins">
+<aside class="fixed top-0 left-0 h-screen w-64 bg-custom-blue text-white overflow-auto font-poppins">
     <!-- Logo -->
     <div class="p-6 font-bold text-xl border-b border-white">
-        <a href="{{ route('dashboard') }}">
+        <a href="{{ route('user.dashboard') }}">
             👋 {{ Auth::user()->name }}
         </a>
     </div>
 
     <!-- Navigation -->
     <nav class="mt-6 space-y-2 px-4">
-        <a href="{{ route('dashboard') }}" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-custom-blue-light {{ request()->routeIs('dashboard') ? 'bg-custom-blue-light' : '' }}">
+        <a href="{{ route('user.dashboard') }}" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-custom-blue-light {{ request()->routeIs('dashboard') ? 'bg-custom-blue-light' : '' }}">
             <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8.333 16.667V11.667h3.334v5H15.833V10h2.5L10 2.5 1.667 10h2.5v6.667H8.333Z" fill="currentColor"/>
             </svg>
@@ -17,24 +17,20 @@
         </a>
 
         <!-- Link lain -->
-        <a href="{{ route('penghuni.index') }}" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-custom-blue-light {{ request()->routeIs('penghuni.*') ? 'bg-custom-blue-light' : '' }}">
-            <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M12 5.5A3.5 3.5 0 1 1 8.5 9 3.5 3.5 0 0 1 12 5.5m-7 2a3 3 0 0 1 1.53.42c-.15 1.43.27 2.85 1.13 3.96A3 3 0 0 1 5 14a3 3 0 0 1-3-3 3 3 0 0 1 3-3m14 0a3 3 0 0 1 3 3 3 3 0 0 1-3 3c-1.16 0-2.16-.66-2.66-1.62a5.54 5.54 0 0 0 1.13-3.96 3 3 0 0 1 1.53-.42M5.5 18.25C5.5 16.18 8.41 14.5 12 14.5s6.5 1.68 6.5 3.75V20h-13zM0 20v-1.5c0-1.39 1.89-2.56 4.45-2.9-.59.68-.95 1.62-.95 2.65V20zm24 0h-3.5v-1.75c0-1.03-.36-1.97-.95-2.65 2.56.34 4.45 1.51 4.45 2.9z"/>
-            </svg>
-        <span>Daftar Penghuni</span>
+        <a href="{{ route('laporan.index') }}" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-custom-blue-light {{ request()->routeIs('laporan.*') ? 'bg-custom-blue-light' : '' }}">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m13.78 15.3l6 6l2.11-2.16l-6-6zm3.72-5.2c-.39 0-.81-.05-1.14-.19L4.97 21.25l-2.11-2.11l7.41-7.4L8.5 9.96l-.72.7l-1.45-1.41v2.86l-.7.7l-3.52-3.56l.7-.7h2.81l-1.4-1.41l3.56-3.56a2.976 2.976 0 0 1 4.22 0L9.89 5.74l1.41 1.4l-.71.71l1.79 1.78l1.82-1.88c-.14-.33-.2-.75-.2-1.12a3.49 3.49 0 0 1 3.5-3.52c.59 0 1.11.14 1.58.42L16.41 6.2l1.5 1.5l2.67-2.67c.28.47.42.97.42 1.6c0 1.92-1.55 3.47-3.5 3.47"/></svg>
+        <span>Laporkan Masalah Kost</span>
         </a>
 
         <!-- Link lain -->
-        <a href="{{ route('laporan.index') }}" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-custom-blue-light {{ request()->routeIs('laporan.*') ? 'bg-custom-blue-light' : '' }}">
-            <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm2 4v2h10V7H7zm0 4v2h10v-2H7zm0 4v2h7v-2H7z"/>
-            </svg>
-        <span>Daftar Keluhan</span>
+        <a href="{{ route('pembayaran.index') }}" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-custom-blue-light {{ request()->routeIs('pembayaran.index*') ? 'bg-custom-blue-light' : '' }}">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2m0 7H4V8h16Z"/></svg>
+        <span>Pembayaran</span>
         </a>
 
-        <a href="{{ route('admin.transaksi.riwayat') }}" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-custom-blue-light {{ request()->routeIs('admin.transaksi.riwayat*') ? 'bg-custom-blue-light' : '' }}">
+        <a href="{{ route('pembayaran.riwayat') }}" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-custom-blue-light {{ request()->routeIs('pembayaran.riwayat*') ? 'bg-custom-blue-light' : '' }}">
             <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 8H12v5l4.28 2.54l.72-1.21l-3.5-2.08zM13 3a9 9 0 0 0-9 9H1l3.96 4.03L9 12H6a7 7 0 0 1 7-7a7 7 0 0 1 7 7a7 7 0 0 1-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.9 8.9 0 0 0 13 21a9 9 0 0 0 9-9a9 9 0 0 0-9-9"/></svg>
-        <span>Data Seluruh Transaksi</span>
+        <span>Riwayat Pembayaran</span>
         </a>
     </nav>
 
@@ -70,5 +66,4 @@
         });
     });
 </script>
-
 </aside>

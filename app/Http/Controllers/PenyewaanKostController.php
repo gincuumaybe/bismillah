@@ -13,7 +13,8 @@ class PenyewaanKostController extends Controller
      */
     public function index()
     {
-        //
+        $penyewaans = PenyewaanKost::where('user_id', auth()->id())->latest()->get();
+        return view('penyewaan.index', compact('penyewaans'));
     }
 
     /**
@@ -21,6 +22,13 @@ class PenyewaanKostController extends Controller
      */
     public function create()
     {
+        // return view('penyewaan.create');
+        $user = auth()->user();
+
+        if ($user->penyewaanKost()->exists()) {
+            return redirect()->route('user.dashboard')->with('error', 'Kamu sudah mengisi data penyewaan.');
+        }
+
         return view('penyewaan.create');
     }
 
@@ -29,21 +37,33 @@ class PenyewaanKostController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
+
+        $user = auth()->user();
+
+        if ($user->penyewaanKost()->exists()) {
+            return redirect()->route('user.dashboard')->with('error', 'Data penyewaan sudah ada.');
+        }
+
         $request->validate([
-            'nomor_kamar' => 'required|string|max:255',
-            'tanggal_masuk' => 'required|date',
+            'nomor_kamar' => 'required|string',
+            'tanggal_masuk' => 'required|date|after_or_equal:today',
+            'durasi_bulan' => 'required|integer|min:1',
         ]);
 
-        // Simpan data
-        PenyewaanKost::create([
-            'user_id' => auth()->id(),
+        $tanggalMasuk = \Carbon\Carbon::parse($request->tanggal_masuk);
+        $tanggalKeluar = $tanggalMasuk->copy()->addMonths($request->durasi_bulan);
+
+        $user->penyewaanKost()->create([
+            'user_id' => $user->id,
             'nomor_kamar' => $request->nomor_kamar,
             'tanggal_masuk' => $request->tanggal_masuk,
+            'tanggal_keluar' => $tanggalKeluar->toDateString(),
+            'durasi_bulan' => $request->durasi_bulan,
+            'status' => 'aktif', // atau status default yang kamu gunakan
         ]);
 
-        // Redirect setelah data berhasil disimpan
-        return redirect()->route('user.dashboard')->with('success', 'Data penyewaan berhasil disimpan!');
+        return redirect()->route('user.dashboard')->with('success', 'Data penyewaan berhasil disimpan.');
+
     }
 
     /**
