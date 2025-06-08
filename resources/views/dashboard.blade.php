@@ -1,17 +1,35 @@
 <x-app-layout>
-    <div class="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex gap-10">
-            <!-- Grafik Jumlah Penghuni -->
-            <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
-                <h2 class="text-xl font-semibold mb-6">Statistik Jumlah Penghuni Kost</h2>
-                <canvas id="penghuniChart" class="w-full h-64"></canvas>
-            </div>
+    <div class="py-10 max-w-5xl mx-auto sm:px-6 lg:px-8">
 
-            <!-- Grafik Total Pemasukan -->
-            <div class="bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold mb-6">Statistik Total Pemasukan Kost</h2>
-                <canvas id="pemasukanChart" class="w-full h-64"></canvas>
-            </div>
+        <div class="space-y-12">
+            <!-- Section: Statistik Jumlah Penghuni -->
+            <section class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-2 text-gray-700">Jumlah Penghuni Kost</h2>
+                <p class="text-gray-500 mb-4">
+                    Total penghuni tersebar di lokasi kost dengan perbandingan yang jelas. Data membantu pemilik kost
+                    dalam pengelolaan dan perencanaan kamar.
+                </p>
+                <canvas id="penghuniChart" class="w-full h-56"></canvas>
+            </section>
+
+            <!-- Section: Statistik Total Pemasukan -->
+            <section class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-2 text-gray-700">Total Pemasukan Kost</h2>
+                <p class="text-gray-500 mb-4">
+                    Ringkasan pemasukan dari masing-masing lokasi kost, memudahkan evaluasi performa keuangan secara
+                    cepat.
+                </p>
+
+                <!-- Total pemasukan summary -->
+                <div class="mb-4 text-lg font-semibold text-green-700">
+                    Total Pemasukan:
+                    <span>
+                        {{ number_format($totalPemasukanSum, 0, ',', '.') }}
+                    </span>
+                    <span class="text-base font-normal text-gray-600"></span>
+                </div>
+                <canvas id="pemasukanChart" class="w-full h-56"></canvas>
+            </section>
         </div>
     </div>
 
@@ -26,7 +44,7 @@
             datasets: [{
                 label: 'Jumlah Penghuni',
                 data: @json($userCounts),
-                backgroundColor: 'rgba(37, 99, 235, 0.7)', // warna biru
+                backgroundColor: 'rgba(37, 99, 235, 0.7)',
                 borderColor: 'rgba(37, 99, 235, 1)',
                 borderWidth: 1
             }]
@@ -43,6 +61,11 @@
                             stepSize: 1
                         }
                     }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
                 }
             }
         };
@@ -55,7 +78,7 @@
             datasets: [{
                 label: 'Total Pemasukan (Rp)',
                 data: @json($totalPemasukan),
-                backgroundColor: 'rgba(16, 185, 129, 0.7)', // warna hijau
+                backgroundColor: 'rgba(16, 185, 129, 0.7)',
                 borderColor: 'rgba(16, 185, 129, 1)',
                 borderWidth: 1
             }]
@@ -78,6 +101,11 @@
                                 });
                             }
                         }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
                     }
                 }
             }

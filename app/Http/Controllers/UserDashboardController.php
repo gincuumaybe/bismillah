@@ -17,12 +17,12 @@ class UserDashboardController extends Controller
         $user = auth()->user();
 
         // Ambil semua laporan user ini
-        $laporans = Laporan::where('user_id', $user->id)->get();
+        $laporans = Laporan::where('user_id', $user->id)->latest()->take(5)->get(); // hanya ambil 5 terbaru
+        $jumlahLaporan = Laporan::where('user_id', $user->id)->count();
 
-        // Contoh data ringkasan: jumlah laporan
-        $jumlahLaporan = $laporans->count();
+        // Ambil data penyewaan terkait user
+        $penyewaan = PenyewaanKost::where('user_id', $user->id)->latest()->first(); // ambil yang paling baru
 
-        // Kirim ke view dashboard
-        return view('user.dashboard', compact('laporans', 'jumlahLaporan'));
+        return view('user.dashboard', compact('laporans', 'jumlahLaporan', 'penyewaan'));
     }
 }

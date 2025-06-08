@@ -18,8 +18,8 @@ class PembayaranController extends Controller
 
         // Ambil data penyewaan aktif user
         $penyewaan = PenyewaanKost::where('user_id', $user->id)
-                                    ->where('status', 'aktif') // atau sesuai status yang digunakan
-                                    ->first();
+            ->where('status', 'aktif') // atau sesuai status yang digunakan
+            ->first();
 
         if (!$penyewaan) {
             return redirect()->back()->with('error', 'Tidak ada penyewaan aktif ditemukan');
@@ -35,7 +35,7 @@ class PembayaranController extends Controller
         // Hitung total pembayaran berdasarkan durasi
         $totalHarga = $hargaPerBulan * $penyewaan->durasi_bulan;
 
-        return view('pembayaran.index', compact('penyewaan', 'hargaPerBulan', 'totalHarga'));
+        return view('pembayaran.index', compact('user','penyewaan', 'hargaPerBulan', 'totalHarga'));
     }
 
     public function bayar(Request $request)
@@ -47,8 +47,8 @@ class PembayaranController extends Controller
 
         // Ambil data penyewaan aktif user
         $penyewaan = PenyewaanKost::where('user_id', $user->id)
-                                    ->where('status', 'aktif')
-                                    ->first();
+            ->where('status', 'aktif')
+            ->first();
 
         if (!$penyewaan) {
             return response()->json(['error' => 'Tidak ada penyewaan aktif'], 404);
@@ -147,9 +147,9 @@ class PembayaranController extends Controller
     public function riwayat()
     {
         $transaksis = Transaksi::with('penyewaanKost') // Eager load penyewaan
-                                ->where('user_id', auth()->id())
-                                ->latest()
-                                ->get();
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
         return view('pembayaran.riwayat', compact('transaksis'));
     }
 
@@ -157,8 +157,8 @@ class PembayaranController extends Controller
     {
         // Pastikan pengguna adalah admin (tambahkan middleware di routes jika diperlukan)
         $transaksis = Transaksi::with(['user', 'penyewaanKost'])
-                                ->latest()
-                                ->get();
+            ->latest()
+            ->get();
         return view('pembayaran.riwayat-admin', compact('transaksis'));
     }
 

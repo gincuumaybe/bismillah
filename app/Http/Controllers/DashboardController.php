@@ -28,6 +28,8 @@ class DashboardController extends Controller
 
         $totalPemasukan = $dataPemasukan->pluck('total_pemasukan')->toArray();
 
-        return view('dashboard', compact('locations', 'userCounts', 'totalPemasukan'));
+        $totalPemasukanSum = array_sum($totalPemasukan);
+
+        return view('dashboard', compact('locations', 'userCounts', 'totalPemasukan','totalPemasukanSum'));
     }
 }

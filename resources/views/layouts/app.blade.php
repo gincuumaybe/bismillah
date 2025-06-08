@@ -1,44 +1,39 @@
-
-
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        @stack('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    </head>
-    <body class="font-poppins antialiased h-screen">
-        <div class="min-h-screen flex">
+    @stack('scripts')
 
-            @if(auth()->user()->role === 'admin')
-                @include('layouts.navigation')
-            @elseif(auth()->user()->role === 'user')
-                @include('layouts.sidebar-user')
-            @endif
+</head>
 
-            <main class="ml-64 p-6 overflow-auto overflow-x-hidden">
-                {{ $slot }}
-            </main>
-        </div>
-    </body>
+<body class="font-poppins antialiased h-screen">
+    <div class="min-h-screen flex">
+
+        @if (auth()->user()->role === 'admin')
+            @include('layouts.navigation')
+        @elseif(auth()->user()->role === 'user')
+            @include('layouts.sidebar-user')
+        @endif
+
+        <main class="ml-64 w-full h-screen overflow-auto overflow-x-hidden">
+            {{ $slot }}
+        </main>
+    </div>
+</body>
+
 </html>
-
-
-
-
-
