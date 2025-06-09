@@ -12,6 +12,13 @@ pipeline {
             }
         }
 
+        stage('Check PHP & Composer') {
+            steps {
+                bat 'php -v'
+                bat 'composer --version'
+            }
+        }
+
         stage('Install PHP & Node Dependencies') {
             steps {
                 bat 'composer install'
