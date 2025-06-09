@@ -12,15 +12,24 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install PHP & Node Dependencies') {
             steps {
+                bat 'composer install'
                 bat 'npm install'
             }
         }
 
-        stage('Run Tests') {
+        stage('Build Assets') {
             steps {
-                bat 'npm run test'
+                bat 'npm run build' // atau `npm run dev` jika belum ada build
+            }
+        }
+
+        stage('Run Laravel Tests') {
+            steps {
+                bat 'php artisan test'
+                // atau bisa juga:
+                // bat 'vendor\\bin\\phpunit'
             }
         }
     }
