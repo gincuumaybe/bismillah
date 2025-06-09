@@ -1,58 +1,46 @@
 pipeline {
-    agent any
+  agent any
 
-    environment {
-        APP_ENV = 'testing'
+  stages {
+    stage('Install Dependencies') {
+      steps {
+        bat 'composer install'
+        bat 'npm install'
+        bat 'npm run build'
+      }
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/gincuumaybe/bismillah.git', branch: 'main'
-            }
-        }
-
-        stage('Check PHP & Composer') {
-            steps {
-                bat 'php -v'
-                bat 'composer --version'
-            }
-        }
-
-        stage('Install PHP & Node Dependencies') {
-            steps {
-                bat 'composer install'
-                bat 'npm install'
-            }
-        }
-
-        stage('Build Assets') {
-            steps {
-                bat 'npm run build' // atau `npm run dev` jika belum ada build
-            }
-        }
-
-        stage('Migrate Test DB') {
-            steps {
-                bat 'php artisan migrate --env=testing --force'
-            }
-        }
-
-        stage('Run Laravel Tests') {
-            steps {
-                bat 'php artisan test'
-                // atau bisa juga:
-                // bat 'vendor\\bin\\phpunit'
-            }
-        }
+    stage('Copy .env') {
+      steps {
+        bat 'copy .env.testing .env'
+      }
     }
 
-    post {
-        success {
-            echo 'Build & Test Sukses!'
-        }
-        failure {
-            echo 'Build Gagal!'
-        }
+    stage('Generate App Key') {
+      steps {
+        bat 'php artisan key:generate'
+      }
     }
+
+    stage('Migrate Test DB') {
+      steps {
+        bat 'php artisan migrate --force'
+      }
+    }
+
+    stage('Run Tests') {
+      steps {
+        bat 'php artisan test'
+      }
+    }
+  }
+
+  post {
+    success {
+      echo 'Build Berhasil!'
+    }
+    failure {
+      echo 'Build Gagal!'
+    }
+  }
 }

@@ -105,6 +105,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/transaksi/riwayat', [PembayaranController::class, 'riwayatAdmin'])->name('admin.transaksi.riwayat');
     Route::resource('penghuni', PenghuniController::class)->except(['show']);
     Route::patch('/laporan/{id}/selesai', [LaporanController::class, 'setSelesai'])->name('laporan.setSelesai');
+    Route::delete('/laporan/admin/{laporan}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
+    Route::get('/laporan/{id}/delete', [LaporanController::class, 'destroy'])->name('laporan.delete');
 });
 
 // USER

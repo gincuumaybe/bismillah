@@ -171,6 +171,6 @@ class LaporanController extends Controller
         $laporan->status = true; // selesai
         $laporan->save();
 
-        return redirect()->route('laporan.indexAdmin')->with('status', 'Laporan ditandai sebagai selesai.');
+        return redirect()->route('laporan.index')->with('status', 'Laporan ditandai sebagai selesai.');
     }
 }

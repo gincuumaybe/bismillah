@@ -35,7 +35,7 @@ class PembayaranController extends Controller
         // Hitung total pembayaran berdasarkan durasi
         $totalHarga = $hargaPerBulan * $penyewaan->durasi_bulan;
 
-        return view('pembayaran.index', compact('user','penyewaan', 'hargaPerBulan', 'totalHarga'));
+        return view('pembayaran.index', compact('user', 'penyewaan', 'hargaPerBulan', 'totalHarga'));
     }
 
     public function bayar(Request $request)
@@ -103,7 +103,10 @@ class PembayaranController extends Controller
         return response()->json([
             'snap_token' => $snapToken,
             'transaction_status' => 'success',
-            'order_id' => $kode
+            'order_id' => $kode,
+            'user_id' => $user->id,
+            'penyewaan_id' => $penyewaan->id,
+            'jumlah' => $totalHarga
         ]);
     }
 
