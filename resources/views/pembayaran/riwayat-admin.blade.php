@@ -1,18 +1,21 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white p-6 shadow-lg rounded-lg">
+            <div class="bg-white p-6 shadow-md rounded-lg">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-semibold text-gray-700">Data Seluruh Transaksi</h3>
                     <button id="downloadPdf"
-                        class="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 inline" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
                         Download PDF
                     </button>
                 </div>
                 <div class="overflow-x-auto max-w-full">
-                    <table id="transaksiTable"
-                        class="w-full table-auto border border-gray-200 text-sm rounded overflow-hidden">
-                        <thead class="bg-gray-100">
+                    <table id="transaksiTable" class="w-full table-fixed border border-gray-200 text-sm rounded overflow-hidden">
+                        <thead class="bg-blue-50 text-blue-800">
                             <tr>
                                 <th class="px-4 py-2 border">ID</th>
                                 <th class="px-4 py-2 border">Kode Transaksi</th>
@@ -25,18 +28,16 @@
                                 <th class="px-4 py-2 border">Tanggal Keluar</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="bg-white">
                             @foreach ($transaksis as $transaksi)
-                                <tr class="hover:bg-gray-50 transition">
+                                <tr class="hover:bg-blue-50 transition">
                                     <td class="px-4 py-2 border">{{ $transaksi->id }}</td>
                                     <td class="px-4 py-2 border">{{ $transaksi->kode_transaksi }}</td>
                                     <td class="px-4 py-2 border">{{ $transaksi->user->name ?? 'Tidak ada data' }}</td>
-                                    <td class="px-4 py-2 border">{{ $transaksi->user->lokasi_kost ?? 'Tidak ada data' }}
-                                    </td>
+                                    <td class="px-4 py-2 border">{{ $transaksi->user->lokasi_kost ?? 'Tidak ada data' }}</td>
                                     <td class="px-4 py-2 border">
                                         {{ $transaksi->penyewaanKost->nomor_kamar ?? 'Tidak ada data' }}</td>
-                                    <td class="px-4 py-2 border">{{ number_format($transaksi->jumlah, 0, ',', '.') }}
-                                    </td>
+                                    <td class="px-4 py-2 border">{{ number_format($transaksi->jumlah, 0, ',', '.') }}</td>
                                     <td class="px-4 py-2 border">
                                         @if ($transaksi->status == 'success')
                                             <span
@@ -50,7 +51,8 @@
                                         @endif
                                     </td>
                                     <td class="px-4 py-2 border">
-                                        {{ $transaksi->created_at->timezone('Asia/Jakarta')->format('d M Y H:i') }}</td>
+                                        {{ $transaksi->created_at->timezone('Asia/Jakarta')->format('d M Y H:i') }}
+                                    </td>
                                     <td class="px-4 py-2 border">
                                         {{ $transaksi->penyewaanKost && $transaksi->penyewaanKost->tanggal_keluar
                                             ? \Carbon\Carbon::parse($transaksi->penyewaanKost->tanggal_keluar)->timezone('Asia/Jakarta')->format('d M Y H:i')
@@ -72,6 +74,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
 
     <script>
         $(document).ready(function() {
@@ -97,20 +101,66 @@
                 const {
                     jsPDF
                 } = window.jspdf;
-                const doc = new jsPDF('l', 'pt', 'a4'); // landscape, point, A4
-                const table = document.getElementById('transaksiTable');
+                const doc = new jsPDF('landscape', 'pt', 'a4'); // Landscape mode, pt units
 
-                html2canvas(table, {
-                    scale: 2
-                }).then((canvas) => {
-                    const imgData = canvas.toDataURL('image/png');
-                    const imgProps = doc.getImageProperties(imgData);
-                    const pdfWidth = doc.internal.pageSize.getWidth();
-                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                // Add a title
+                doc.setFontSize(18);
+                doc.setTextColor(40);
+                doc.text("Laporan Transaksi", 40, 40);
 
-                    doc.addImage(imgData, 'PNG', 20, 20, pdfWidth - 40, pdfHeight);
-                    doc.save('data-transaksi.pdf');
+                // Prepare table headers
+                const headers = [
+                    [
+                        "ID",
+                        "Kode Transaksi",
+                        "Nama Penyewa",
+                        "Lokasi Kost",
+                        "Nomor Kamar",
+                        "Jumlah (Rp)",
+                        "Status Pembayaran",
+                        "Tanggal Masuk",
+                        "Tanggal Keluar"
+                    ]
+                ];
+
+                // Extract data from table
+                const data = [];
+                $('#transaksiTable tbody tr').each(function() {
+                    const row = [];
+                    $(this).find('td').each(function() {
+                        row.push($(this).text().trim());
+                    });
+                    data.push(row);
                 });
+
+                // Generate autoTable
+                doc.autoTable({
+                    head: headers,
+                    body: data,
+                    startY: 60,
+                    theme: 'striped', // Clean look with zebra stripes
+                    headStyles: {
+                        fillColor: [37, 99, 235], // Dark slate (similar to Tailwind slate-800)
+                        textColor: 255,
+                        fontStyle: 'bold'
+                    },
+                    alternateRowStyles: {
+                        fillColor: [240, 249, 255]
+                    },
+                    styles: {
+                        fontSize: 8,
+                        cellPadding: 4,
+                        overflow: 'linebreak',
+                    },
+                    margin: {
+                        top: 60,
+                        left: 20,
+                        right: 20
+                    }
+                });
+
+                // Save as PDF
+                doc.save('data-seluruh-transaksi.pdf');
             });
         });
     </script>
