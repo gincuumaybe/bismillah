@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/gincuumaybe/bismillah.git'
+                git 'https://github.com/gincuumaybe/bismillah.git', branch: 'main'
             }
         }
 
