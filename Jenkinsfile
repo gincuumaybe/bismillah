@@ -32,6 +32,12 @@ pipeline {
             }
         }
 
+        stage('Migrate Test DB') {
+            steps {
+                bat 'php artisan migrate --env=testing --force'
+            }
+        }
+
         stage('Run Laravel Tests') {
             steps {
                 bat 'php artisan test'
