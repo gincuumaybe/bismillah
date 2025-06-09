@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('laporans', function (Blueprint $table) {
             $table->id();
             // $table->unsignedBigInteger('user_id');
-            $table->foreignId('user_id')->constrained('')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('name')->nullable();
             $table->string('lokasi_kost')->nullable();
             $table->string('nomor_kamar')->nullable();
