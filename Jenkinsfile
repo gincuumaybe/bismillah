@@ -14,15 +14,13 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'composer install'
-                sh 'cp .env.example .env'
-                sh 'php artisan key:generate'
+                bat 'npm install'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh './vendor/bin/phpunit'
+                bat 'npm run test'
             }
         }
     }
