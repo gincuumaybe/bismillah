@@ -13,13 +13,18 @@ return new class extends Migration
     {
         Schema::create('penyewaan_kosts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            // $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained('')->onDelete('cascade');
             $table->string('nomor_kamar');
             $table->date('tanggal_masuk');
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
+            $table->date('tanggal_keluar')->nullable();
+            $table->integer('durasi_bulan')->default(1);
             $table->timestamps();
+            // $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
+            // $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
     }

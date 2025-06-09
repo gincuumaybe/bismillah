@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('penghunis', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->unique();
+            // $table->unsignedBigInteger('user_id')->unique();
+            $table->foreignId('user_id')->constrained('')->onDelete('cascade');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->unique();
