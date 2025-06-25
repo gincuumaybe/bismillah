@@ -41,11 +41,26 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
-            return redirect()->route('dashboard');
-        } elseif ($user->role === 'user') {
-            return redirect()->route('user.dashboard');
+        if ($user->status == 'nonaktif') {
+            // Jika status Nonaktif, arahkan ke halaman penyewaan/createlama.blade.php
+            return redirect()->route('penyewaan.createlama');
         }
+
+        if ($user->role === 'admin') {
+            return redirect()->route('dashboard'); // Pastikan route 'dashboard' ada
+        } elseif ($user->role === 'user') {
+            if (!$user->penyewaanKost()->exists()) {
+                return redirect()->route('penyewaan.create');
+            } else {
+                return redirect()->route('user.dashboard');
+            }
+        }
+
+        // if ($user->role === 'admin') {
+        //     return redirect()->route('dashboard');
+        // } elseif ($user->role === 'user') {
+        //     return redirect()->route('user.dashboard');
+        // }
 
         // Default jika role tidak dikenali
         Auth::logout();

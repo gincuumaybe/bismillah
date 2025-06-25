@@ -24,13 +24,22 @@
 <body class="font-poppins antialiased h-screen">
     <div class="min-h-screen flex">
 
-        @if (auth()->user()->role === 'admin')
+        {{-- @if (auth()->user()->role === 'admin')
             @include('layouts.navigation')
         @elseif(auth()->user()->role === 'user')
             @include('layouts.sidebar-user')
+        @endif --}}
+
+        @if (!request()->is('penyewaan/createlama') && !request()->is('penyewaan/create'))
+            @if (auth()->user()->role === 'admin')
+                @include('layouts.navigation')
+            @elseif(auth()->user()->role === 'user')
+                @include('layouts.sidebar-user')
+            @endif
         @endif
 
-        <main class="ml-64 w-full h-screen overflow-auto overflow-x-hidden">
+        <main
+            class="{{ request()->is('penyewaan/createlama') || request()->is('penyewaan/create') ? '' : 'ml-64' }} w-full h-screen overflow-auto overflow-x-hidden">
             {{ $slot }}
         </main>
     </div>

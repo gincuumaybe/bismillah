@@ -29,7 +29,7 @@
             <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm2 4v2h10V7H7zm0 4v2h10v-2H7zm0 4v2h7v-2H7z"/>
             </svg>
-        <span>Daftar Keluhan</span>
+        <span>Daftar Laporan Keluhan</span>
         </a>
 
         <a href="{{ route('admin.transaksi.riwayat') }}" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-custom-blue-light {{ request()->routeIs('admin.transaksi.riwayat*') ? 'bg-custom-blue-light' : '' }}">

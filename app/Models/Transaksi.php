@@ -28,4 +28,9 @@ class Transaksi extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function penghuni()
+    {
+        return $this->belongsTo(Penghuni::class, 'user_id'); // User ID in Transaksi is the foreign key
+    }
 }

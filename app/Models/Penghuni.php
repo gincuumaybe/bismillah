@@ -20,6 +20,7 @@ class Penghuni extends Model
         'role',
         'lokasi_kost',
         'password',
+        'status'
     ];
 
     protected $hidden = [
@@ -31,5 +32,13 @@ class Penghuni extends Model
         return $this->hasOne(Penghuni::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
+    public function transaksis()
+    {
+        return $this->hasMany(Transaksi::class, 'user_id');
+    }
 }

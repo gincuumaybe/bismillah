@@ -1,15 +1,15 @@
 <x-app-layout>
-    <div class="max-w-3xl mx-auto mt-8 p-8 bg-white border rounded-lg shadow-xl">
-        <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">Lengkapi Data Penyewaan</h2>
+    <div class="max-w-3xl mx-auto mt-8 p-6 bg-white border rounded-lg shadow-xl">
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Lengkapi Data Penyewaan</h2>
 
-            <form action="{{ route('penyewaan.store') }}" method="POST" class="mt-4 space-y-6">
+        <form action="{{ route('penyewaan.storelama') }}" method="POST" class="mt-4 space-y-4">
             @csrf
 
             <!-- Nomor Kamar -->
-            <div class="mb-6">
+            <div class="mb-4">
                 <label for="nomor_kamar" class="block text-lg font-medium text-gray-700">Nomor Kamar</label>
                 <input type="text" id="nomor_kamar" name="nomor_kamar" value="{{ old('nomor_kamar') }}"
-                    class="mt-2 p-3 w-full border rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="mt-1 p-2 w-full border rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required>
                 @error('nomor_kamar')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
@@ -17,10 +17,10 @@
             </div>
 
             <!-- Tanggal Masuk -->
-            <div class="mb-6">
+            <div class="mb-4">
                 <label for="tanggal_masuk" class="block text-lg font-medium text-gray-700">Tanggal Masuk</label>
                 <input type="date" id="tanggal_masuk" name="tanggal_masuk" value="{{ old('tanggal_masuk') }}"
-                    class="mt-2 p-3 w-full border rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="mt-1 p-2 w-full border rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required>
                 @error('tanggal_masuk')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
@@ -28,10 +28,10 @@
             </div>
 
             <!-- Durasi (bulan) -->
-            <div class="mb-6">
+            <div class="mb-4">
                 <label for="durasi_bulan" class="block text-lg font-medium text-gray-700">Durasi Sewa (Bulan)</label>
                 <select id="durasi_bulan" name="durasi_bulan"
-                    class="mt-2 p-3 w-full border rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="mt-1 p-2 w-full border rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required>
                     @for ($i = 1; $i <= 6; $i++)
                         <option value="{{ $i }}" {{ old('durasi_bulan') == $i ? 'selected' : '' }}>
@@ -41,14 +41,30 @@
             </div>
 
             <!-- Tanggal Keluar (readonly) -->
-            <div class="mb-6">
+            <div class="mb-4">
                 <label for="tanggal_keluar" class="block text-lg font-medium text-gray-700">Tanggal Keluar</label>
                 <input type="date" id="tanggal_keluar" name="tanggal_keluar" value="{{ old('tanggal_keluar') }}"
-                    class="mt-2 p-3 w-full border rounded-md text-lg bg-gray-100 cursor-not-allowed" readonly>
+                    class="mt-1 p-2 w-full border rounded-md text-lg bg-gray-100 cursor-not-allowed" readonly>
             </div>
 
-            <!-- Info durasi -->
+            <!-- Info Durasi -->
             <div id="info_durasi" class="mb-4 text-md text-gray-600"></div>
+
+            <!-- Lokasi Kost -->
+            <div class="mb-4">
+                <label for="lokasi_kost" class="block text-lg font-medium text-gray-700">Pilih Lokasi Kost</label>
+                <select id="lokasi_kost" name="lokasi_kost" required
+                    class="mt-1 p-2 w-full border rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">-- Pilih Lokasi --</option>
+                    <option value="Berbek" {{ old('lokasi_kost') == 'Berbek' ? 'selected' : '' }}>Berbek</option>
+                    <option value="Gunung_Anyar" {{ old('lokasi_kost') == 'Gunung_Anyar' ? 'selected' : '' }}>Gunung
+                        Anyar</option>
+                    <option value="Rungkut" {{ old('lokasi_kost') == 'Rungkut' ? 'selected' : '' }}>Rungkut</option>
+                </select>
+                @error('lokasi_kost')
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div>
 
             <button type="submit"
                 class="w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg">
@@ -66,9 +82,6 @@
         function hitungTanggalKeluar() {
             const tanggalMasuk = new Date(tanggalMasukInput.value);
             const durasi = parseInt(durasiInput.value);
-
-            console.log('Tanggal masuk:', tanggalMasukInput.value); // Debug
-            console.log('Durasi:', durasi); // Debug
 
             if (!isNaN(tanggalMasuk.getTime()) && durasi > 0) {
                 // Tambahkan durasi bulan ke tanggal masuk
@@ -96,7 +109,7 @@
 
                 // Update info durasi
                 infoDurasi.textContent =
-                    `Anda menetap selama ${durasi} bulan, dari ${tanggalMasukFormatted} sampai ${tanggalKeluarFormatted}.`;
+                    `Anda akan masuk pada ${tanggalMasukFormatted} dengan durasi ${durasi} bulan, dan tanggal keluar Anda adalah ${tanggalKeluarFormatted}.`;
             } else {
                 tanggalKeluarInput.value = '';
                 infoDurasi.textContent = '';

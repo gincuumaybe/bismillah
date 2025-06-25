@@ -97,7 +97,13 @@ Route::get('/', function () {
 });
 // Login
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+// Route::get('/penyewaan/createlama', function () {
+//     return view('penyewaan.createlama'); // Pastikan view ini ada di folder resources/views/penyewaan/createlama.blade.php
+// })->name('penyewaan.createlama');
+// Route::post('/penyewaan/store', [PenyewaanKostController::class, 'storeCreate'])->name('penyewaan.store');
+// Route::post('/penyewaan/storelama', [PenyewaanKostController::class, 'storeCreateLama'])->name('penyewaan.storelama');
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
+
 
 // ADMIN
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -107,6 +113,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('/laporan/{id}/selesai', [LaporanController::class, 'setSelesai'])->name('laporan.setSelesai');
     Route::delete('/laporan/admin/{laporan}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
     Route::get('/laporan/{id}/delete', [LaporanController::class, 'destroy'])->name('laporan.delete');
+    Route::delete('penghuni/{id}', [PenghuniController::class, 'destroy'])->name('penghuni.destroy');
 });
 
 // USER
@@ -119,6 +126,11 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::post('/pembayaran/bayar', [PembayaranController::class, 'bayar'])->name('pembayaran.bayar');
     Route::post('/pembayaran/store', [PembayaranController::class, 'store'])->name('pembayaran.store');
     Route::get('/pembayaran/riwayat', [PembayaranController::class, 'riwayat'])->name('pembayaran.riwayat');
+    // Route::post('/penyewaan/store', [PenyewaanKostController::class, 'store'])->name('penyewaan.store');
+    Route::get('/penyewaan/create', [PenyewaanKostController::class, 'create'])->name('penyewaan.create');
+    Route::get('/penyewaan/createlama', [PenyewaanKostController::class, 'createLama'])->name('penyewaan.createlama');  // Route untuk form penyewaan lama
+    Route::post('/penyewaan/store', [PenyewaanKostController::class, 'storeCreate'])->name('penyewaan.store');
+    Route::post('/penyewaan/storelama', [PenyewaanKostController::class, 'storeCreateLama'])->name('penyewaan.storelama');
 });
 
 // UMUM (login user/admin)
@@ -126,8 +138,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('penyewaan', PenyewaanKostController::class)->except(['show']);
-    Route::resource('laporan', LaporanController::class)->only(['index', 'store', 'update', 'edit', 'destroy','create']);
+    // Route::resource('penyewaan', PenyewaanKostController::class)->except(['show']);
+    Route::resource('laporan', LaporanController::class)->only(['index', 'store', 'update', 'edit', 'destroy', 'create']);
     // dst...
 });
 

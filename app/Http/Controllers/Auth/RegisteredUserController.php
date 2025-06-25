@@ -32,11 +32,21 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'phone' => ['required', 'string', 'regex:/^08[0-9]{8,11}$/'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'lokasi_kost' => ['required', 'string', 'in:Berbek,Gunung_Anyar,Rungkut'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'status' => ['nullable', 'string', 'in:aktif,nonaktif'], // Tambahkan validasi untuk status
         ]);
+
+        // Menyimpan gambar jika ada
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            // Simpan gambar ke direktori public/images
+            // $imagePath = $request->file('image')->store('public/images');
+            $imagePath = $request->file('image')->store('images', 'public');  // store in public/images
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -45,6 +55,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'user',
             'lokasi_kost' => $request->lokasi_kost,
+            'image' => $imagePath,  // Menyimpan path gambar jika ada
+            'status' => 'nonaktif', // Status default
         ]);
 
         event(new Registered($user));
@@ -54,11 +66,13 @@ class RegisteredUserController extends Controller
         if ($user->role === 'user') {
             if (!$user->penyewaanKost()->exists()) {
                 return redirect()->route('penyewaan.create');
-        }
+            }
         } elseif ($user->role === 'admin') {
             return redirect()->route('views.dashboard');
         }
 
         return redirect(RouteServiceProvider::HOME);
+
+        // return redirect()->route('login')->with('status', 'Pendaftaran berhasil! Silakan login terlebih dahulu.');
     }
 }

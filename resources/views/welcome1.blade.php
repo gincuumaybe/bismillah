@@ -9,12 +9,6 @@
                     class="h-full w-full bg-gradient-to-br from-custom-blue to-custom-blue-light flex items-center justify-center relative">
                     <!-- Image/Content -->
                     <div class="text-center text-white z-10">
-                        <div
-                            class="w-32 h-32 mx-auto mb-6 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                            <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" />
-                            </svg>
-                        </div>
                         <h3 class="text-2xl font-bold mb-2">Selamat datang!</h3>
                         <p class="text-blue-100">Silahkan masuk untuk dapat menggunakan sistem Rumah Kost Rahmatika</p>
                     </div>

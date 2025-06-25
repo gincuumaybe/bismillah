@@ -4,13 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +25,12 @@ class User extends Authenticatable
         'role',
         'lokasi_kost',
         'password',
+        'image',
+        'status',
     ];
+
+    protected $dates = ['deleted_at'];
+
 
     // public function user()
     // {
@@ -34,9 +40,14 @@ class User extends Authenticatable
 
     public function penyewaanKost()
     {
-        return $this->hasOne(\App\Models\PenyewaanKost::class);
+        return $this->hasOne(\App\Models\PenyewaanKost::class, 'user_id'); // Satu user memiliki satu penyewaan kost
     }
 
+    // Relasi ke Penghuni
+    public function penghuni()
+    {
+        return $this->hasOne(Penghuni::class); // Satu user memiliki satu penghuni
+    }
 
     public function laporans()
     {

@@ -25,7 +25,7 @@ class PenyewaanKost extends Model
     // Relasi ke user
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     // Relasi ke Transaksi

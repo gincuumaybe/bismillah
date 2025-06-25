@@ -126,6 +126,11 @@ class PembayaranController extends Controller
         if ($existingTransaction) {
             // Update status jika transaksi sudah ada
             $existingTransaction->update(['status' => $request->status]);
+
+            if ($request->status === 'success') {
+                session(['pembayaran_sukses' => true]);
+            }
+
             return response()->json([
                 'message' => 'Transaction status updated successfully',
                 'transaction' => $existingTransaction
@@ -140,6 +145,11 @@ class PembayaranController extends Controller
             'jumlah' => $request->jumlah,
             'status' => $request->status,
         ]);
+
+        // Set session untuk pembayaran sukses
+        if ($request->status === 'success') {
+            session(['pembayaran_sukses' => true]);
+        }
 
         return response()->json([
             'message' => 'Transaction created successfully',

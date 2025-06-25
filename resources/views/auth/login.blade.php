@@ -1,19 +1,14 @@
 @extends('layouts.welcome-layout')
 
 @section('content')
-<div class="h-screen w-screen flex justify-center items-center">
-    <div class="w-full h-full bg-white shadow-none rounded-none overflow-hidden flex">
+    <div class="h-screen w-screen flex justify-center items-center">
+        <div class="w-full h-full bg-white shadow-none rounded-none overflow-hidden flex">
             <!-- Left Side - Image Section -->
             <div class="hidden lg:block lg:w-1/2 relative">
-                <div class="h-full bg-gradient-to-br from-custom-blue to-custom-blue-light flex items-center justify-center relative">
+                <div
+                    class="h-full bg-gradient-to-br from-custom-blue to-custom-blue-light flex items-center justify-center relative">
                     <!-- Image/Content -->
                     <div class="text-center text-white z-10">
-                        <div class="w-32 h-32 mx-auto mb-6 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                            <!-- You can replace this with an actual image -->
-                            <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z"/>
-                            </svg>
-                        </div>
                         <h3 class="text-2xl font-bold mb-2">Selamat datang!</h3>
                         <p class="text-blue-100">Silahkan masuk untuk dapat menggunakan sistem Rumah Kost Rahmatika</p>
                     </div>
@@ -36,19 +31,24 @@
                         <!-- Email Address -->
                         <div class="mb-4">
                             <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <input id="email" class="mt-1 block w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="email" name="email" :value="old('email')" required autofocus>
+                            <input id="email"
+                                class="mt-1 block w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                type="email" name="email" :value="old('email')" required autofocus>
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
                         <!-- Password -->
                         <div class="mb-4">
                             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                            <input id="password" class="mt-1 block w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" type="password" name="password" required>
+                            <input id="password"
+                                class="mt-1 block w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                type="password" name="password" required>
                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>
 
                         <!-- Submit Button -->
-                        <button type="submit" id="submitButton" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg">
+                        <button type="submit" id="submitButton"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg">
                             Masuk
                         </button>
 
@@ -64,29 +64,29 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 
-<!-- SweetAlert2 Script -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    // Handle form submission
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form from submitting immediately
+    <!-- SweetAlert2 Script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form from submitting immediately
 
-        // Show SweetAlert loading spinner
-        Swal.fire({
-            title: 'Masuk...',
-            text: 'Tunggu sebentar...',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading(); // Show loading animation
-            }
+            // Show SweetAlert loading spinner
+            Swal.fire({
+                title: 'Masuk...',
+                text: 'Tunggu sebentar...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading(); // Show loading animation
+                }
+            });
+
+            // Simulate delay
+            setTimeout(() => {
+                this.submit();
+            }, 2000);
         });
-
-        // Simulate delay
-        setTimeout(() => {
-            this.submit();
-        }, 2000);
-    });
-</script>
+    </script>
 @endsection
