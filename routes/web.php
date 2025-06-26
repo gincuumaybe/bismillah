@@ -137,9 +137,9 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
 // UMUM (login user/admin)
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // Route::resource('penyewaan', PenyewaanKostController::class)->except(['show']);
     Route::resource('laporan', LaporanController::class)->only(['index', 'store', 'update', 'edit', 'destroy', 'create']);
     // dst...
