@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 
 class ProfileTest extends TestCase
 {
@@ -25,11 +27,16 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
 
+        Storage::fake('public');
+
         $response = $this
             ->actingAs($user)
             ->patch('/profile', [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
+                'phone' => '08123456789',
+                'lokasi_kost' => 'Test Location',
+                'image' => UploadedFile::fake()->image('avatar.jpg'),
             ]);
 
         $response
@@ -40,6 +47,9 @@ class ProfileTest extends TestCase
 
         $this->assertSame('Test User', $user->name);
         $this->assertSame('test@example.com', $user->email);
+        $this->assertSame('08123456789', $user->phone);
+        $this->assertSame('Test Location', $user->lokasi_kost);
+        Storage::disk('public')->assertExists($user->image);
         $this->assertNull($user->email_verified_at);
     }
 
