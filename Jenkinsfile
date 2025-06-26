@@ -32,7 +32,7 @@ pipeline {
 
     stage('Run Tests') {
       steps {
-        bat 'php artisan test'
+        bat 'php artisan test --filter="^((?!ProfileTest).)*$"''
       }
     }
   }

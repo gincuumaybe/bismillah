@@ -103,6 +103,9 @@ Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('l
 // Route::post('/penyewaan/store', [PenyewaanKostController::class, 'storeCreate'])->name('penyewaan.store');
 // Route::post('/penyewaan/storelama', [PenyewaanKostController::class, 'storeCreateLama'])->name('penyewaan.storelama');
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
 
