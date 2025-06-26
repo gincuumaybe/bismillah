@@ -9,6 +9,9 @@ use App\Models\Transaksi;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PenyewaanKost;
+use PDF; // Pastikan Anda sudah menginstal package dompdf/dompdf
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TransaksiExport;
 
 class PembayaranController extends Controller
 {
@@ -25,12 +28,27 @@ class PembayaranController extends Controller
             return redirect()->back()->with('error', 'Tidak ada penyewaan aktif ditemukan');
         }
 
+        // Cek status transaksi dari database
+        $transaksi = Transaksi::where('penyewaan_id', $penyewaan->id)
+            ->latest() // Ambil transaksi terbaru
+            ->first();
+
+        // Jika transaksi sudah sukses, simpan status di session
+        if ($transaksi && $transaksi->status === 'success') {
+            session(['pembayaran_sukses' => true]);
+        }
+
         $hargaPerBulan = match ($user->lokasi_kost) {
             'Berbek' => 650000,
             'Gunung_Anyar' => 500000,
             'Rungkut' => 500000,
             default => 500000
         };
+
+        // Periksa jika sudah ada pembayaran sukses dan simpan status di session
+        if ($penyewaan->status == 'success') {
+            session(['pembayaran_sukses' => true]);
+        }
 
         // Hitung total pembayaran berdasarkan durasi
         $totalHarga = $hargaPerBulan * $penyewaan->durasi_bulan;
@@ -98,6 +116,19 @@ class PembayaranController extends Controller
         ];
 
         $snapToken = Snap::getSnapToken($params);
+
+        // // Setelah pembayaran berhasil, perbarui status transaksi menjadi 'success'
+        // if ($this->isPaymentSuccessful($request)) {  // Cek status pembayaran dari Midtrans atau API
+        //     $transaksi->status = 'success';  // Ubah status transaksi menjadi 'success'
+        //     $transaksi->save();
+
+        //     // Update status penyewaan menjadi 'dibayar' atau 'success'
+        //     $penyewaan->status = 'success'; // Pembayaran sudah dilakukan
+        //     $penyewaan->save();
+
+        //     // Simpan status pembayaran sukses di session
+        //     session(['pembayaran_sukses' => true]);
+        // }
 
         // Tambahkan kode di sini untuk menangani sukses tanpa callback
         return response()->json([
@@ -178,5 +209,22 @@ class PembayaranController extends Controller
     public function callback(Request $request)
     {
         return response()->json(['message' => 'Callback tidak digunakan'], 200);
+    }
+
+    public function downloadPdf()
+    {
+        // Ambil data transaksi yang ingin dimasukkan ke PDF
+        $transaksiData = Transaksi::with(['user', 'penyewaanKost'])->get();  // Sesuaikan dengan query yang dibutuhkan
+
+        // Generate PDF dari view 'pembayaran.pdf'
+        $pdf = PDF::loadView('pembayaran.pdf', compact('transaksiData'));
+
+        // Menyimpan dan mendownload PDF
+        return $pdf->download('laporan_transaksi.pdf');
+    }
+
+    public function downloadExcel()
+    {
+        return Excel::download(new TransaksiExport, 'laporan_transaksi.xlsx');
     }
 }

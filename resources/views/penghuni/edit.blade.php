@@ -3,8 +3,7 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <!-- Header -->
             <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-900 mb-2">Edit Data Penghuni</h2>
-                <p class="text-gray-600">Silakan perbarui data penghuni yang ada di bawah ini</p>
+                <h2 class="text-3xl font-bold text-black mb-2">Edit Data Penghuni</h2>
             </div>
 
             <!-- Form Card -->
@@ -17,29 +16,29 @@
 
                         <!-- Nama Field -->
                         <div>
-                            <label class="block mb-2 text-sm font-medium text-blue-800">Nama Penghuni</label>
+                            <label class="block mb-2 text-sm font-medium text-black">Nama Penghuni</label>
                             <input type="text" name="name" value="{{ old('name', $penghuni->name) }}"
-                                class="w-full px-4 py-3 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                                class="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         </div>
 
                         <!-- Email Field -->
                         <div>
-                            <label class="block mb-2 text-sm font-medium text-blue-800">Email Penghuni</label>
+                            <label class="block mb-2 text-sm font-medium text-black">Email Penghuni</label>
                             <input type="email" name="email" value="{{ old('email', $penghuni->email) }}"
-                                class="w-full px-4 py-3 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                                class="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         </div>
 
                         <!-- No Telepon Field -->
                         <div>
-                            <label class="block mb-2 text-sm font-medium text-blue-800">No Telepon Penghuni</label>
+                            <label class="block mb-2 text-sm font-medium text-black">No Telepon Penghuni</label>
                             <input type="text" name="no_telp" value="{{ old('no_telp', $penghuni->phone) }}"
-                                class="w-full px-4 py-3 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
+                                class="w-full px-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                         </div>
 
                         <!-- Lokasi Kost Field -->
                         <div>
-                            <label class="block mb-2 text-sm font-medium text-blue-800">Lokasi Penghuni</label>
-                            <select name="lokasi_kost" class="w-full border-gray-300 rounded-lg shadow-sm">
+                            <label class="block mb-2 text-sm font-medium text-black">Lokasi Penghuni</label>
+                            <select name="lokasi_kost" class="w-full border-black rounded-lg shadow-sm">
                                 <option value="Gunung_Anyar"
                                     {{ old('lokasi_kost', $penghuni->lokasi_kost) === 'Gunung_Anyar' ? 'selected' : '' }}>
                                     Gunung Anyar</option>

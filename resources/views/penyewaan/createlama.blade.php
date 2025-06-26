@@ -50,6 +50,13 @@
             <!-- Info Durasi -->
             <div id="info_durasi" class="mb-4 text-md text-gray-600"></div>
 
+            {{-- <div class="mb-3">
+                <label for="image" class="block text-sm font-medium text-gray-700">Masukkan Foto KTP</label>
+                <input type="file" id="image" name="image" accept="image/*"
+                    class="mt-1 block w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <x-input-error :messages="$errors->get('image')" class="mt-2" />
+            </div> --}}
+
             <!-- Lokasi Kost -->
             <div class="mb-4">
                 <label for="lokasi_kost" class="block text-lg font-medium text-gray-700">Pilih Lokasi Kost</label>

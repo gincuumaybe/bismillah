@@ -114,6 +114,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/laporan/admin/{laporan}', [LaporanController::class, 'destroy'])->name('laporan.destroy');
     Route::get('/laporan/{id}/delete', [LaporanController::class, 'destroy'])->name('laporan.delete');
     Route::delete('penghuni/{id}', [PenghuniController::class, 'destroy'])->name('penghuni.destroy');
+    Route::get('pembayaran/download-pdf', [PembayaranController::class, 'downloadPdf'])->name('pembayaran.downloadPdf');
+    Route::get('pembayaran/export-excel', [PembayaranController::class, 'downloadExcel'])->name('pembayaran.exportExcel');
 });
 
 // USER

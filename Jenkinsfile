@@ -13,6 +13,8 @@ pipeline {
     stage('Copy .env') {
       steps {
         bat 'copy .env.testing .env'
+        bat 'php artisan config:clear'
+        bat 'php artisan cache:clear'
       }
     }
 

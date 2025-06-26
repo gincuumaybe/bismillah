@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PenyewaanKost;
+use PDF; // Pastikan Anda sudah menginstal package dompdf/dompdf
 
 
 class PenyewaanKostController extends Controller
@@ -147,5 +148,17 @@ class PenyewaanKostController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function downloadPdf()
+    {
+        // Ambil data transaksi
+        $transaksiData = PenyewaanKost::all();  // Anda bisa mengganti query ini sesuai kebutuhan
+
+        // Generate PDF dari view 'penyewaan.pdf'
+        $pdf = PDF::loadView('penyewaan.pdf', compact('transaksiData'));
+
+        // Download PDF
+        return $pdf->download('laporan_transaksi.pdf');
     }
 }

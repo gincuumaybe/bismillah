@@ -44,6 +44,14 @@
                                 Bayar Sekarang
                             </a>
                         @endif
+                        {{-- @if (session('pembayaran_sukses') || ($transaksi && $transaksi->status === 'success'))
+                            <p>Pembayaran telah berhasil!</p>
+                        @else
+                            <a href="{{ route('pembayaran.index') }}"
+                                class="inline-block mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-lg">
+                                Bayar Sekarang
+                            </a>
+                        @endif --}}
                     @else
                         <p class="text-lg">Belum ada data penyewaan.</p> <!-- Ukuran teks lebih besar -->
                     @endif

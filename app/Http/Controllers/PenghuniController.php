@@ -58,17 +58,17 @@ class PenghuniController extends Controller
         ]);
 
 
-        // Simpan ke DB (nanti kita buat model dan tabelnya)
-        Penghuni::create([
-            'user_id' => $user->id,
-            'name' => $request->nama,
-            'email' => $request->email,
-            'phone' => $request->no_telp,
-            'lokasi_kost' => $request->lokasi_kost,
-            'password' => Hash::make($request->password),
-            'role' => 'user',
-            'status' => 'nonaktif',
-        ]);
+        // // Simpan ke DB (nanti kita buat model dan tabelnya)
+        // Penghuni::create([
+        //     'user_id' => $user->id,
+        //     'name' => $request->nama,
+        //     'email' => $request->email,
+        //     'phone' => $request->no_telp,
+        //     'lokasi_kost' => $request->lokasi_kost,
+        //     'password' => Hash::make($request->password),
+        //     'role' => 'user',
+        //     'status' => 'nonaktif',
+        // ]);
 
         return redirect()->route('penghuni.index')->with('success', 'Penghuni berhasil ditambahkan!');
     }
