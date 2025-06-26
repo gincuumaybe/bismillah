@@ -28,54 +28,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // $request->validate([
-        //     'email' => ['required', 'string', 'email'],
-        //     'password' => ['required', 'string'],
-        // ]);
-
-        // if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
-        //     return back()->withErrors([
-        //         'email' => __('auth.failed'),
-        //     ])->onlyInput('email');
-        // }
-
-        // $request->session()->regenerate();
-
-        // $user = Auth::user();
-
-        // if ($user->status == 'nonaktif') {
-        //     // Jika status Nonaktif, arahkan ke halaman penyewaan/createlama.blade.php
-        //     return redirect()->route('penyewaan.createlama');
-        // }
-
-        // if ($user->role === 'admin') {
-        //     return redirect()->route('dashboard'); // Pastikan route 'dashboard' ada
-        // } elseif ($user->role === 'user') {
-        //     if (!$user->penyewaanKost()->exists()) {
-        //         return redirect()->route('penyewaan.create');
-        //     } else {
-        //         return redirect()->route('user.dashboard');
-        //     }
-        // }
-
-        // // if ($user->role === 'admin') {
-        // //     return redirect()->route('dashboard');
-        // // } elseif ($user->role === 'user') {
-        // //     return redirect()->route('user.dashboard');
-        // // }
-
-        // // Default jika role tidak dikenali
-        // Auth::logout();
-        // return redirect('/login')->withErrors(['email' => 'Role tidak dikenali']);
-
-        // // if ($user->role === 'admin') {
-        // //     return redirect()->route('views.dashboard');
-        // // }   elseif ($user->role === 'user') {
-        // //     if (!$user->penyewaanKost()->exists()) {
-        // //         return redirect()->route('penyewaan.create');
-        // //     } else {
-        // //         return redirect()->route('user.dashboard');
-        // // }
         $request->validate([
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
@@ -88,7 +40,6 @@ class AuthenticatedSessionController extends Controller
         }
 
         $request->session()->regenerate();
-
         $user = Auth::user();
 
         // Cek status pengguna

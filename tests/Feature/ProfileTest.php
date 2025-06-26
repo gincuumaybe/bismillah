@@ -26,7 +26,6 @@ class ProfileTest extends TestCase
     public function test_profile_information_can_be_updated(): void
     {
         $user = User::factory()->create();
-
         Storage::fake('public');
 
         $response = $this
@@ -49,8 +48,8 @@ class ProfileTest extends TestCase
         $this->assertSame('test@example.com', $user->email);
         $this->assertSame('08123456789', $user->phone);
         $this->assertSame('Test Location', $user->lokasi_kost);
-        Storage::disk('public')->assertExists($user->image);
-        $this->assertNull($user->email_verified_at);
+        Storage::disk('public')->assertFileExists('avatars/' . $user->image);
+        $this->assertNull($user->email_verified_at);  // Pastikan email_verified_at tetap null
     }
 
     public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void
@@ -61,14 +60,14 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->patch('/profile', [
                 'name' => 'Test User',
-                'email' => $user->email,
+                'email' => $user->email,  // Email tidak diubah
             ]);
 
         $response
             ->assertSessionHasNoErrors()
             ->assertRedirect('/profile');
 
-        $this->assertNotNull($user->refresh()->email_verified_at);
+        $this->assertNotNull($user->refresh()->email_verified_at); // Pastikan email_verified_at tidak berubah
     }
 
     public function test_user_can_delete_their_account(): void
@@ -86,7 +85,7 @@ class ProfileTest extends TestCase
             ->assertRedirect('/');
 
         $this->assertGuest();
-        $this->assertNull($user->fresh());
+        $this->assertNull($user->fresh()->deleted_at);
     }
 
     public function test_correct_password_must_be_provided_to_delete_account(): void

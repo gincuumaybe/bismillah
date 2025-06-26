@@ -27,28 +27,38 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $user = $request->user();
+        $user = auth()->user();
 
-        // Handle file upload (image)
+        // Validasi input profil
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'required|string|max:20',
+            'lokasi_kost' => 'required|string|max:255',
+            'image' => 'nullable|image|max:1024',
+        ]);
+
+        // Update informasi profil
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
+        $user->lokasi_kost = $request->input('lokasi_kost');
+
+        // Menangani gambar jika ada
         if ($request->hasFile('image')) {
-            // Menghapus gambar lama jika ada
+            // Hapus gambar lama jika ada
             if ($user->image) {
                 Storage::disk('public')->delete($user->image);
             }
-
-            // Menyimpan gambar baru
-            $imagePath = $request->file('image')->store('profile_images', 'public');
-            $user->image = $imagePath;
+            // Simpan gambar baru
+            $user->image = $request->file('image')->store('avatars', 'public');
         }
 
-        // Update data pengguna
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->lokasi_kost = $request->lokasi_kost;
+        // Jangan merubah email_verified_at saat update profil
+        // Pastikan email_verified_at tetap sama
         $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return redirect('/profile');
     }
 
     /**

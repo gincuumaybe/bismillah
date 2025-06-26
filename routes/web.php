@@ -105,6 +105,8 @@ Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('l
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
 
 
+
+
 // ADMIN
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
