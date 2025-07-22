@@ -147,7 +147,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // Route::resource('penyewaan', PenyewaanKostController::class)->except(['show']);
     Route::resource('laporan', LaporanController::class)->only(['index', 'store', 'update', 'edit', 'destroy', 'create']);
-    // dst...
+    
 });
 
 // Route auth default dari Laravel Breeze / Fortify
