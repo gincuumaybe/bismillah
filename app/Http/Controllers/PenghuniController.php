@@ -44,7 +44,23 @@ class PenghuniController extends Controller
             'no_telp' => 'required|numeric|unique:users,phone',
             'lokasi_kost' => ['required', 'string', 'in:Gunung_Anyar,Berbek,Rungkut'],
             'password' => 'required|string|min:6',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        // Default image null
+        $imagePath = null;
+
+        // Handle upload gambar jika ada
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+
+            // Simpan ke folder: storage/app/public/images
+            $storedPath = $image->storeAs('public/images', $imageName);
+
+            // Ubah jadi path publik
+            $imagePath = str_replace('public/', 'storage/', $storedPath);
+        }
 
         // Simpan ke tabel users
         $user = User::create([
@@ -55,6 +71,7 @@ class PenghuniController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'user',
             'status' => 'nonaktif',  // Set status ke 'nonaktif' secara manual
+            'image' => $imagePath,
         ]);
 
 

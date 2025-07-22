@@ -377,11 +377,11 @@
                         <!-- Submit Button -->
                         <button type="submit" id="submit-btn"
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg">
-                            Daftar
+                            Register
                         </button>
 
                         <!-- Login Link -->
-                        <div class="mt-4 text-center">
+                        <div class="mt-4    text-center">
                             <p class="text-sm text-gray-500">
                                 Sudah punya akun?
                                 <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Masuk di sini</a>

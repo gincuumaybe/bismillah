@@ -145,7 +145,7 @@
                                                 <strong>Status:</strong> {{ $penghuni->status }}<br>
                                                 @if ($penghuni->image)
                                                     <strong>Gambar:</strong><br>
-                                                    <img src="{{ asset('storage/' . $penghuni->image) }}"
+                                                    <img src="{{ asset($penghuni->image) }}"
                                                         alt="Gambar Penghuni"
                                                         class="img-fluid rounded mt-2 max-h-40 object-cover">
                                                 @else
