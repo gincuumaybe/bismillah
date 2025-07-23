@@ -290,7 +290,7 @@
                     class="h-full bg-gradient-to-br from-custom-blue to-custom-blue-light flex items-center justify-center relative">
                     <div class="text-center text-white z-10">
                         <h3 class="text-2xl font-bold mb-2">Selamat datang!</h3>
-                        <p class="text-blue-100">Buat akun, untuk dapat menggunakan sistem Rumah Kost Rahmatika</p>
+                        <p class="text-blue-100">Buat akun terlebih dahulu, untuk dapat memesan kamar di Rumah Kost Rahmatika</p>
                     </div>
                 </div>
             </div>

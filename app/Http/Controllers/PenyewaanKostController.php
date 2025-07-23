@@ -25,11 +25,24 @@ class PenyewaanKostController extends Controller
     {
         $user = auth()->user();
 
+        $lokasi = $user->lokasi_kost;
+
         if ($user->penyewaanKost()->exists()) {
             return redirect()->route('user.dashboard')->with('error', 'Kamu sudah mengisi data penyewaan.');
         }
 
-        return view('penyewaan.create');
+        $semuaKamar = $this->getAllNomorKamarByLokasi($lokasi);
+
+        // Ambil kamar yang sudah ditempati berdasarkan lokasi yang sama
+        $kamarTerisi = PenyewaanKost::whereHas('user', function ($query) use ($lokasi) {
+            $query->where('lokasi_kost', $lokasi);
+        })
+            ->pluck('nomor_kamar')
+            ->toArray();
+
+        $kamarTersedia = array_diff($semuaKamar, $kamarTerisi);
+
+        return view('penyewaan.create', compact('kamarTersedia'));
     }
 
     /**
@@ -160,5 +173,16 @@ class PenyewaanKostController extends Controller
 
         // Download PDF
         return $pdf->download('laporan_transaksi.pdf');
+    }
+
+    private function getAllNomorKamarByLokasi($lokasi)
+    {
+        $daftarKamar = [
+            'Rungkut' => ['1A', '2A', '3A', '4A', '5A', '6A', '7A', '8A', '9A', '10A', '11A', '12A', '13A', '14A', '15A', '16A'],
+            'Gunung_Anyar' => ['1B', '2B', '3B', '4B', '5B', '6B', '7B', '8B', '9B', '10B'],
+            'Berbek' => ['1C', '2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C'],
+        ];
+
+        return $daftarKamar[$lokasi] ?? [];
     }
 }

@@ -94,7 +94,11 @@ use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome1');
-});
+})->name('home');
+
+Route::get('/kamar-kost', function () {
+    return view('kamarkost');
+})->name('kamar.kost');
 // Login
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 // Route::get('/penyewaan/createlama', function () {
@@ -147,7 +151,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // Route::resource('penyewaan', PenyewaanKostController::class)->except(['show']);
     Route::resource('laporan', LaporanController::class)->only(['index', 'store', 'update', 'edit', 'destroy', 'create']);
-    
 });
 
 // Route auth default dari Laravel Breeze / Fortify

@@ -2,15 +2,29 @@
     <div class="max-w-3xl mx-auto mt-8 p-8 bg-white border rounded-lg shadow-xl">
         <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">Lengkapi Data Penyewaan</h2>
 
-            <form action="{{ route('penyewaan.store') }}" method="POST" class="mt-4 space-y-6">
+        <form action="{{ route('penyewaan.store') }}" method="POST" class="mt-4 space-y-6">
             @csrf
 
             <!-- Nomor Kamar -->
-            <div class="mb-6">
+            {{-- <div class="mb-6">
                 <label for="nomor_kamar" class="block text-lg font-medium text-gray-700">Nomor Kamar</label>
                 <input type="text" id="nomor_kamar" name="nomor_kamar" value="{{ old('nomor_kamar') }}"
                     class="mt-2 p-3 w-full border rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required>
+                @error('nomor_kamar')
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div> --}}
+            <div class="mb-6">
+                <label for="nomor_kamar" class="block text-lg font-medium text-gray-700">Nomor Kamar</label>
+                <select id="nomor_kamar" name="nomor_kamar"
+                    class="mt-2 p-3 w-full border rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
+                    <option value="">-- Pilih Nomor Kamar --</option>
+                    @foreach ($kamarTersedia as $kamar)
+                        <option value="{{ $kamar }}">{{ $kamar }}</option>
+                    @endforeach
+                </select>
                 @error('nomor_kamar')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                 @enderror
